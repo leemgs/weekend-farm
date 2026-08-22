@@ -270,6 +270,12 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 .file-picker input { display: none; }
 .admin-status { min-height: 20px; margin-bottom: 0 !important; color: #4d7351 !important; font-weight: 700; }
 .admin-status.error { color: #ad412c !important; }
+.upload-progress { width: 100%; height: 13px; margin-top: 15px; overflow: hidden; border: 0; border-radius: 99px; background: #e2e5d8; accent-color: #598052; }
+.upload-progress::-webkit-progress-bar { border-radius: 99px; background: #e2e5d8; }
+.upload-progress::-webkit-progress-value { border-radius: 99px; background: linear-gradient(90deg, #6d945f, #c3a552); transition: width .2s ease; }
+.upload-progress::-moz-progress-bar { border-radius: 99px; background: linear-gradient(90deg, #6d945f, #c3a552); }
+.upload-progress-text { min-height: 20px; margin: 7px 0 0 !important; color: #4d7351 !important; font-weight: 800; }
+.upload-progress-text.error { color: #ad412c !important; }
 .repo-photo-list { display: grid; gap: 9px; margin: 20px 0 0; padding: 0; list-style: none; }
 .repo-photo-list li { display: grid; grid-template-columns: 55px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 9px; border-radius: 12px; background: #f2ecdd; }
 .repo-photo-list img { width: 55px; height: 45px; border-radius: 8px; object-fit: cover; }

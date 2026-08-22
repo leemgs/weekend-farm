@@ -51,7 +51,7 @@
     return bytesToBase64(new TextEncoder().encode(value));
   }
 
-  async function commitChanges(changes, message) {
+  async function commitChanges(changes, message, onPhotoStored) {
     const ref = await github(repoPath(`git/ref/heads/${REPO.branch}`));
     const baseSha = ref.object.sha;
     const baseCommit = await github(repoPath(`git/commits/${baseSha}`));
@@ -68,6 +68,7 @@
           body: { content: change.base64, encoding: 'base64' }
         });
         treeEntries.push({ path: change.path, mode: '100644', type: 'blob', sha: blob.sha });
+        if (change.isPhoto && onPhotoStored) onPhotoStored(change);
       }
     }
 
@@ -233,11 +234,11 @@
     status(`${year}년 ${category}: ${images.length}장`);
   }
 
-  async function updateManifest(mutator, extraChanges, message) {
+  async function updateManifest(mutator, extraChanges, message, onPhotoStored) {
     const manifest = await getManifest();
     mutator(manifest.photos);
     const manifestChange = { path: MANIFEST, base64: textToBase64(`${JSON.stringify(manifest, null, 2)}\n`) };
-    await commitChanges([...extraChanges, manifestChange], message);
+    await commitChanges([...extraChanges, manifestChange], message, onPhotoStored);
   }
 
   async function uploadPhotos() {
@@ -245,14 +246,22 @@
     if (!files.length) return status('업로드할 사진을 선택해 주세요.', true);
     const category = $('adminCategory').value;
     const selectedYear = $('adminYear').value;
+    const english = window.FarmI18n?.language === 'en';
+    const showUploadProgress = (message, error = false) => {
+      status(message, error);
+      $('uploadProgressText').textContent = message;
+      $('uploadProgressText').classList.toggle('error', error);
+    };
     $('uploadRepoBtn').disabled = true;
-    status(`${files.length}장의 사진을 GitHub에 저장하는 중…`);
+    $('uploadProgress').hidden = false;
+    $('uploadProgress').max = files.length;
+    $('uploadProgress').value = 0;
+    showUploadProgress(english ? `Preparing ${files.length} photos for GitHub…` : `${files.length}장의 사진을 GitHub에 저장할 준비 중…`);
     try {
       const records = [];
       const changes = [];
       const existingByYear = new Map();
       const queuedPaths = new Set();
-      const detected = [];
       const skipped = [];
       let overwriteCount = 0;
       for (const file of files) {
@@ -285,29 +294,42 @@
         }
 
         queuedPaths.add(path);
-        changes.push({ path, base64: bytesToBase64(new Uint8Array(await file.arrayBuffer())) });
+        changes.push({ path, base64: bytesToBase64(new Uint8Array(await file.arrayBuffer())), isPhoto: true });
         records.push({ category, year: Number(year), name, path: path.replace(/^docs\//, '') });
-        detected.push(`${name} → ${year}년(${detection.source}${alreadyUploaded ? ', 덮어쓰기' : ''})`);
       }
       if (!changes.length) {
         $('repoUpload').value = '';
-        status('기존 파일 덮어쓰기를 취소하여 업로드된 사진이 없습니다.');
+        $('uploadProgress').hidden = true;
+        showUploadProgress(english ? 'No photos were uploaded because overwrite was cancelled.' : '기존 파일 덮어쓰기를 취소하여 업로드된 사진이 없습니다.');
         return;
       }
+      const total = changes.length;
+      let stored = 0;
+      $('uploadProgress').max = total;
+      showUploadProgress(english ? `0 of ${total} photos stored · ${total} remaining` : `총 ${total}장 중 0장 저장 완료 · ${total}장 남음`);
       await updateManifest((photos) => {
         records.forEach((record) => {
           const existing = photos.find((photo) => photo.path === record.path);
           if (existing) Object.assign(existing, record);
           else photos.push(record);
         });
-      }, changes, `${overwriteCount ? 'Add or overwrite' : 'Add'} ${changes.length} farm photo(s) in ${category}`);
+      }, changes, `${overwriteCount ? 'Add or overwrite' : 'Add'} ${changes.length} farm photo(s) in ${category}`, () => {
+        stored += 1;
+        $('uploadProgress').value = stored;
+        const remaining = total - stored;
+        showUploadProgress(english
+          ? `${stored} of ${total} photos stored · ${remaining} remaining`
+          : `총 ${total}장 중 ${stored}장 저장 완료 · ${remaining}장 남음`);
+      });
       $('repoUpload').value = '';
-      const skippedMessage = skipped.length ? ` 취소된 파일: ${skipped.join(', ')}.` : '';
-      status(`GitHub 저장 완료: ${detected.join(', ')}.${skippedMessage} Pages 반영에는 잠시 시간이 걸릴 수 있습니다.`);
+      const result = english
+        ? `All ${total} photos stored in GitHub${overwriteCount ? ` (${overwriteCount} overwritten)` : ''}${skipped.length ? ` · ${skipped.length} skipped` : ''}. Pages may take a moment to update.`
+        : `총 ${total}장 GitHub 저장 완료${overwriteCount ? ` (덮어쓰기 ${overwriteCount}장)` : ''}${skipped.length ? ` · 취소 ${skipped.length}장` : ''}. Pages 반영에는 잠시 시간이 걸릴 수 있습니다.`;
+      showUploadProgress(result);
       if (selectedYear !== 'auto') await refreshAdminList();
       window.dispatchEvent(new Event('farm-gallery-updated'));
     } catch (error) {
-      status(error.message, true);
+      showUploadProgress(error.message, true);
     } finally {
       $('uploadRepoBtn').disabled = false;
     }
