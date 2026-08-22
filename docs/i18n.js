@@ -18,10 +18,11 @@
       searchPlaceholder: 'Search vegetables or fruits', growPeriod: 'Sowing · transplanting · growing', harvestPeriod: 'Harvest time', cropHeader: 'Ujeong-eup crops', sow: 'Sow', plant: 'Plant', harvest: 'Harvest',
       galleryTitle: 'Four Seasons on Our Farm', galleryIntro: 'Photos are stored by year and category in the leemgs/weekend-farm GitHub repository—not temporary browser storage.',
       retreat: 'Retreat', gardenCategory: 'Garden', barbecue: 'Barbecue', tools: 'Farm Tools', categoryRecord: ' Records', permanentAlbum: 'A permanent album connected to GitHub Pages.', managePhotos: 'Add · edit · delete photos', loading: 'Loading photos from GitHub…', emptyGallery: '<b>No photos yet.</b><br><br>Use Photo Manager to add the first memory.', loadError: 'Could not load the photo list.',
-      photoAdmin: 'Photo Manager', adminTitle: 'Manage Photo Repository', connectTitle: '1. Connect to GitHub', connect: 'Connect', disconnect: 'Disconnect',
+      photoAdmin: 'Photo Manager', adminTitle: 'Manage Photo Repository', connectTitle: '1. Connect to GitHub', connected: 'Connected', connect: 'Connect', disconnect: 'Disconnect',
       tokenHelp: 'Enter a fine-grained token with <b>Contents: Read and write</b> access to this repository. It is kept only in this tab’s <code>sessionStorage</code> and is never committed.',
       manageTitle: '2. Manage Photos', manageHelp: 'Choose a category and detect the year automatically or select it manually. Auto detection checks EXIF date, filename, then file modified date. Existing filenames always require confirmation before overwrite.',
-      autoYear: 'Detect year automatically', choosePhotos: 'Choose photos', saveGithub: 'Save to GitHub'
+      autoYear: 'Detect year automatically', choosePhotos: 'Choose photos', saveGithub: 'Save to GitHub',
+      perPage: 'Photos per page', previous: 'Previous', next: 'Next', pageOf: 'Page {current} of {total} · {count} photos'
     }
   };
 

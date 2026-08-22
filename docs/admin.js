@@ -400,11 +400,13 @@
       sessionStorage.setItem(TOKEN_KEY, token);
       $('githubToken').value = '';
       $('adminManager').hidden = false;
+      $('connectionBadge').hidden = false;
       status(`${repo.full_name} 저장소에 연결했습니다.`);
       await refreshAdminList();
     } catch (error) {
       token = '';
       sessionStorage.removeItem(TOKEN_KEY);
+      $('connectionBadge').hidden = true;
       status(error.message, true);
     }
   }
@@ -427,6 +429,7 @@
       token = '';
       sessionStorage.removeItem(TOKEN_KEY);
       $('adminManager').hidden = true;
+      $('connectionBadge').hidden = true;
       status('연결을 해제하고 이 탭에서 토큰을 삭제했습니다.');
     };
     $('adminCategory').onchange = refreshAdminList;

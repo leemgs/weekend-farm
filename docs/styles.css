@@ -243,6 +243,12 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 .repo-banner p { margin-top: 4px; color: #d5dfd8; font-size: 13px; }
 .repo-banner button { margin-left: auto; border: 0; border-radius: 99px; padding: 12px 17px; background: #c9603d; color: white; font-weight: 800; cursor: pointer; }
 .photo-info strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gallery-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 22px; padding: 12px 16px; border-radius: 14px; background: rgba(255,250,240,.8); }
+.gallery-controls label { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; font-weight: 750; }
+.gallery-controls select { border: 1px solid #ccd2c5; border-radius: 9px; padding: 7px 28px 7px 10px; background: white; color: var(--ink); }
+.gallery-pagination { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
+.gallery-pagination button { border: 0; border-radius: 9px; padding: 8px 12px; background: #dce6d4; color: #355b44; font-weight: 800; cursor: pointer; }
+.gallery-pagination button:disabled { opacity: .38; cursor: not-allowed; }
 
 .admin-overlay {
   position: fixed;
@@ -262,6 +268,8 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 .admin-content { display: grid; gap: 18px; padding: 26px; }
 .admin-card { padding: 23px; border: 1px solid rgba(53,91,68,.13); border-radius: 18px; background: #fffaf0; }
 .admin-card h3 { margin-top: 0; }
+.connection-badge { display: inline-block; margin-left: 10px; padding: 4px 9px; border-radius: 99px; background: #dcebd7; color: #28703d; font-size: 11px; font-weight: 900; vertical-align: middle; }
+.connection-badge[hidden] { display: none; }
 .admin-card p { color: var(--muted); font-size: 13px; line-height: 1.65; }
 .admin-card code { color: #a44e35; }
 .admin-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
@@ -291,6 +299,8 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
   .repo-photo-list li { grid-template-columns: 45px minmax(0,1fr); }
   .repo-photo-list div { grid-column: 1 / -1; }
   .language-toggle button { padding: 5px 7px; }
+  .gallery-controls { align-items: stretch; flex-direction: column; }
+  .gallery-pagination { justify-content: space-between; }
 }
 .legend b { font-weight: 500; }
 .crop-heading { gap: 6px; }

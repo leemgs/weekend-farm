@@ -128,6 +128,53 @@ async function initGallery() {
     tab.classList.toggle('active', tab.textContent.trim() === category);
   });
   document.querySelector('#categoryName').textContent = displayCategory(category);
+  const pageSizeSelect = document.querySelector('#galleryPageSize');
+  const previousButton = document.querySelector('#galleryPrev');
+  const nextButton = document.querySelector('#galleryNext');
+  const pageStatus = document.querySelector('#galleryPageStatus');
+  let photos = [];
+  let currentPage = 1;
+
+  function renderPage() {
+    grid.replaceChildren();
+    const pageSize = Number(pageSizeSelect.value);
+    const totalPages = Math.max(1, Math.ceil(photos.length / pageSize));
+    currentPage = Math.min(currentPage, totalPages);
+    const start = (currentPage - 1) * pageSize;
+    const visiblePhotos = photos.slice(start, start + pageSize);
+
+    previousButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages || photos.length === 0;
+    const format = translate('pageOf', '{current} / {total} 페이지 · 총 {count}장');
+    pageStatus.textContent = format
+      .replace('{current}', currentPage)
+      .replace('{total}', totalPages)
+      .replace('{count}', photos.length);
+
+    if (!photos.length) {
+      grid.innerHTML = `<div class="empty">${translate('emptyGallery', '<b>아직 담긴 사진이 없어요.</b><br><br>관리자 메뉴에서 GitHub 저장소에 첫 사진을 기록해 보세요.')}</div>`;
+      return;
+    }
+
+    visiblePhotos.forEach((photo) => {
+      const card = document.createElement('article');
+      card.className = 'photo-card';
+      const image = document.createElement('img');
+      image.src = encodeURI(photo.path);
+      image.alt = photo.name;
+      image.loading = 'lazy';
+      const info = document.createElement('div');
+      info.className = 'photo-info';
+      const title = document.createElement('strong');
+      title.textContent = photo.name.replace(/\.[^.]+$/, '');
+      const meta = document.createElement('div');
+      meta.className = 'photo-meta';
+      meta.textContent = isEnglish() ? `${photo.year} · ${displayCategory(photo.category)}` : `${photo.year}년 · ${photo.category}`;
+      info.append(title, meta);
+      card.append(image, info);
+      grid.append(card);
+    });
+  }
 
   async function draw() {
     grid.innerHTML = `<div class="empty">${translate('loading', 'GitHub 저장소에서 사진을 불러오는 중이에요…')}</div>`;
@@ -135,39 +182,21 @@ async function initGallery() {
       const response = await fetch(`photos/manifest.json?cache=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) throw new Error(translate('loadError', '사진 목록을 불러오지 못했습니다.'));
       const manifest = await response.json();
-      const photos = manifest.photos
+      photos = manifest.photos
         .filter((photo) => photo.category === category)
         .sort((a, b) => b.year - a.year || a.name.localeCompare(b.name));
-
-      grid.replaceChildren();
-      if (!photos.length) {
-        grid.innerHTML = `<div class="empty">${translate('emptyGallery', '<b>아직 담긴 사진이 없어요.</b><br><br>관리자 메뉴에서 GitHub 저장소에 첫 사진을 기록해 보세요.')}</div>`;
-        return;
-      }
-
-      photos.forEach((photo) => {
-        const card = document.createElement('article');
-        card.className = 'photo-card';
-        const image = document.createElement('img');
-        image.src = encodeURI(photo.path);
-        image.alt = photo.name;
-        image.loading = 'lazy';
-        const info = document.createElement('div');
-        info.className = 'photo-info';
-        const title = document.createElement('strong');
-        title.textContent = photo.name.replace(/\.[^.]+$/, '');
-        const meta = document.createElement('div');
-        meta.className = 'photo-meta';
-        meta.textContent = isEnglish() ? `${photo.year} · ${displayCategory(photo.category)}` : `${photo.year}년 · ${photo.category}`;
-        info.append(title, meta);
-        card.append(image, info);
-        grid.append(card);
-      });
+      currentPage = 1;
+      renderPage();
     } catch (error) {
       grid.innerHTML = `<div class="empty">${error.message}</div>`;
     }
   }
 
+  pageSizeSelect.addEventListener('change', () => { currentPage = 1; renderPage(); });
+  previousButton.addEventListener('click', () => { if (currentPage > 1) { currentPage -= 1; renderPage(); } });
+  nextButton.addEventListener('click', () => {
+    if (currentPage * Number(pageSizeSelect.value) < photos.length) { currentPage += 1; renderPage(); }
+  });
   window.addEventListener('farm-gallery-updated', () => setTimeout(draw, 1500));
   await draw();
 }
