@@ -250,32 +250,60 @@
     try {
       const records = [];
       const changes = [];
-      const usedByYear = new Map();
+      const existingByYear = new Map();
+      const queuedPaths = new Set();
       const detected = [];
+      const skipped = [];
+      let overwriteCount = 0;
       for (const file of files) {
         const detection = selectedYear === 'auto'
           ? await detectPhotoYear(file)
           : { year: Number(selectedYear), source: '직접 선택' };
         const year = detection.year;
-        if (!usedByYear.has(year)) {
+        if (!existingByYear.has(year)) {
           const current = await listDirectory(`${BASE}/${category}/${year}`);
-          usedByYear.set(year, new Set(current.map((entry) => entry.name)));
+          const existing = new Set(current.map((entry) => entry.name));
+          existingByYear.set(year, existing);
         }
-        const used = usedByYear.get(year);
-        let name = safeName(file.name);
-        if (used.has(name)) {
-          const dot = name.lastIndexOf('.');
-          name = `${name.slice(0, dot)}-${Date.now()}${name.slice(dot)}`;
-        }
-        used.add(name);
+        const name = safeName(file.name);
         const path = `${BASE}/${category}/${year}/${name}`;
+        const alreadyUploaded = existingByYear.get(year).has(name);
+
+        if (queuedPaths.has(path)) {
+          throw new Error(`선택한 파일 중 “${name}” 파일명이 중복됩니다. 중복 파일을 하나만 선택해 주세요.`);
+        }
+        if (alreadyUploaded) {
+          const overwrite = confirm(
+            `“${name}” 파일은 ${year}년 ${category} 사진첩에 이미 업로드되어 있습니다.\n\n` +
+            '기존 사진을 새 사진으로 덮어쓰기(overwrite) 하시겠습니까?'
+          );
+          if (!overwrite) {
+            skipped.push(name);
+            continue;
+          }
+          overwriteCount += 1;
+        }
+
+        queuedPaths.add(path);
         changes.push({ path, base64: bytesToBase64(new Uint8Array(await file.arrayBuffer())) });
         records.push({ category, year: Number(year), name, path: path.replace(/^docs\//, '') });
-        detected.push(`${name} → ${year}년(${detection.source})`);
+        detected.push(`${name} → ${year}년(${detection.source}${alreadyUploaded ? ', 덮어쓰기' : ''})`);
       }
-      await updateManifest((photos) => photos.push(...records), changes, `Add ${files.length} farm photo(s) to ${category}`);
+      if (!changes.length) {
+        $('repoUpload').value = '';
+        status('기존 파일 덮어쓰기를 취소하여 업로드된 사진이 없습니다.');
+        return;
+      }
+      await updateManifest((photos) => {
+        records.forEach((record) => {
+          const existing = photos.find((photo) => photo.path === record.path);
+          if (existing) Object.assign(existing, record);
+          else photos.push(record);
+        });
+      }, changes, `${overwriteCount ? 'Add or overwrite' : 'Add'} ${changes.length} farm photo(s) in ${category}`);
       $('repoUpload').value = '';
-      status(`GitHub 저장 완료: ${detected.join(', ')}. Pages 반영에는 잠시 시간이 걸릴 수 있습니다.`);
+      const skippedMessage = skipped.length ? ` 취소된 파일: ${skipped.join(', ')}.` : '';
+      status(`GitHub 저장 완료: ${detected.join(', ')}.${skippedMessage} Pages 반영에는 잠시 시간이 걸릴 수 있습니다.`);
       if (selectedYear !== 'auto') await refreshAdminList();
       window.dispatchEvent(new Event('farm-gallery-updated'));
     } catch (error) {
