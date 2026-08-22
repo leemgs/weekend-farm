@@ -1,1 +1,78 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>사진첩 | 주말농장 아지트</title><link rel="stylesheet" href="styles.css"></head><body><header class="site-header"><nav class="nav shell"><a class="brand" href="index.html"><i class="brand-mark">葉</i><span>주말농장 아지트<small>WEEKEND FARM RETREAT</small></span></a><div class="links"><a href="index.html">홈</a><a href="calendar.html">농장 캘린더</a><a class="active" href="gallery.html">사진첩</a></div></nav></header><main class="page-main shell"><div class="page-intro"><div><span class="eyebrow">Our memories</span><h1 class="page-title">농장의 사계절 사진첩</h1><p>함께 땀 흘리고 웃었던 주말을 연도별로 기록하세요. 사진 제목은 바로 눌러 수정할 수 있습니다.</p></div></div><nav class="tabs" aria-label="사진 분류"><a class="tab" href="gallery.html?category=아지트">아지트</a><a class="tab" href="garden.html">텃밭</a><a class="tab" href="barbecue.html">바베큐</a><a class="tab" href="tools.html">농기구</a></nav><section class="upload-panel"><div><h2><span id="categoryName"></span>의 순간을 담아주세요</h2><p>여러 장을 한 번에 선택할 수 있으며 브라우저에 안전하게 저장됩니다.</p></div><label class="year-field">기록 연도 <input id="photoYear" type="number" min="2000" max="2100" value="2026"></label><label class="file-label">＋ 사진 업로드<input id="photoUpload" type="file" accept="image/*" multiple></label></section><div id="galleryGrid" class="gallery-grid"></div></main><footer><div class="shell">© 2026 Weekend Farm Retreat</div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>사진첩 | 주말농장 아지트</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="주요 메뉴">
+      <a class="brand" href="index.html"><i class="brand-mark">葉</i><span>주말농장 아지트<small>WEEKEND FARM RETREAT</small></span></a>
+      <div class="links">
+        <a href="index.html">홈</a>
+        <a href="calendar.html">농장 캘린더</a>
+        <a class="active" href="gallery.html">사진첩</a>
+        <button id="openAdmin" class="admin-open" type="button">🔒 사진 관리</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-main shell">
+    <div class="page-intro">
+      <div>
+        <span class="eyebrow">Our memories</span>
+        <h1 class="page-title">농장의 사계절 사진첩</h1>
+        <p>사진은 브라우저 임시 공간이 아니라 <b>leemgs/weekend-farm GitHub 저장소</b>에 연도와 분류별로 보관됩니다.</p>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="사진 분류">
+      <a class="tab" href="gallery.html?category=아지트">아지트</a>
+      <a class="tab" href="garden.html">텃밭</a>
+      <a class="tab" href="barbecue.html">바베큐</a>
+      <a class="tab" href="tools.html">농기구</a>
+    </nav>
+    <section class="repo-banner">
+      <span>☁</span>
+      <div><h2><span id="categoryName"></span>의 기록</h2><p>GitHub Pages와 연결된 영구 사진첩입니다.</p></div>
+      <button id="openAdminBanner" type="button" onclick="document.querySelector('#openAdmin').click()">사진 추가·수정·삭제</button>
+    </section>
+    <div id="galleryGrid" class="gallery-grid"></div>
+  </main>
+
+  <div id="adminOverlay" class="admin-overlay" hidden>
+    <section class="admin-dialog" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+      <header><div><span class="eyebrow">GitHub repository</span><h2 id="adminTitle">사진 저장소 관리</h2></div><button id="closeAdmin" type="button" aria-label="닫기">×</button></header>
+      <div class="admin-content">
+        <section class="admin-card">
+          <h3>1. GitHub 연결</h3>
+          <p>이 저장소에 <b>Contents: Read and write</b> 권한이 있는 fine-grained token을 입력하세요. 토큰은 현재 브라우저 탭의 <code>sessionStorage</code>에만 보관되며 저장소에 기록되지 않습니다.</p>
+          <div class="admin-row">
+            <input id="githubToken" type="password" placeholder="github_pat_…" autocomplete="off" aria-label="GitHub token">
+            <button id="connectGithub" class="btn btn-primary" type="button">연결</button>
+            <button id="disconnectGithub" class="btn btn-secondary" type="button">연결 해제</button>
+          </div>
+          <p id="adminStatus" class="admin-status" aria-live="polite"></p>
+        </section>
+
+        <section id="adminManager" class="admin-card" hidden>
+          <h3>2. 사진 관리</h3>
+          <p>분류와 연도를 선택하면 사진 파일이 <code>docs/photos/분류/연도/</code>에 저장됩니다. 각 작업은 GitHub의 단일 커밋으로 기록됩니다.</p>
+          <div class="admin-row">
+            <select id="adminCategory" aria-label="사진 분류"><option>아지트</option><option>텃밭</option><option>바베큐</option><option>농기구</option></select>
+            <select id="adminYear" aria-label="사진 연도"></select>
+            <label class="btn btn-secondary file-picker">사진 선택<input id="repoUpload" type="file" accept="image/jpeg,image/png,image/gif,image/webp,image/avif" multiple></label>
+            <button id="uploadRepoBtn" class="btn btn-primary" type="button">GitHub에 저장</button>
+          </div>
+          <ul id="repoPhotoList" class="repo-photo-list"></ul>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <footer><div class="shell">© 2026 Weekend Farm Retreat</div></footer>
+  <script src="app.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

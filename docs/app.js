@@ -93,7 +93,7 @@ function renderCalendar() {
 const params = new URLSearchParams(location.search);
 const category = params.get('category') || document.body.dataset.category || '아지트';
 
-function initGallery() {
+async function initGallery() {
   const grid = document.querySelector('#galleryGrid');
   if (!grid) return;
 
@@ -102,66 +102,47 @@ function initGallery() {
   });
   document.querySelector('#categoryName').textContent = category;
 
-  const key = `weekend-farm-${category}`;
-  let photos = JSON.parse(localStorage.getItem(key) || '[]');
-  const save = () => localStorage.setItem(key, JSON.stringify(photos));
+  async function draw() {
+    grid.innerHTML = '<div class="empty">GitHub 저장소에서 사진을 불러오는 중이에요…</div>';
+    try {
+      const response = await fetch(`photos/manifest.json?cache=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error('사진 목록을 불러오지 못했습니다.');
+      const manifest = await response.json();
+      const photos = manifest.photos
+        .filter((photo) => photo.category === category)
+        .sort((a, b) => b.year - a.year || a.name.localeCompare(b.name));
 
-  function draw() {
-    grid.replaceChildren();
-    if (!photos.length) {
-      grid.innerHTML = '<div class="empty"><b>아직 담긴 사진이 없어요.</b><br><br>올해의 소중한 순간을 첫 번째로 기록해 보세요.</div>';
-      return;
+      grid.replaceChildren();
+      if (!photos.length) {
+        grid.innerHTML = '<div class="empty"><b>아직 담긴 사진이 없어요.</b><br><br>관리자 메뉴에서 GitHub 저장소에 첫 사진을 기록해 보세요.</div>';
+        return;
+      }
+
+      photos.forEach((photo) => {
+        const card = document.createElement('article');
+        card.className = 'photo-card';
+        const image = document.createElement('img');
+        image.src = encodeURI(photo.path);
+        image.alt = photo.name;
+        image.loading = 'lazy';
+        const info = document.createElement('div');
+        info.className = 'photo-info';
+        const title = document.createElement('strong');
+        title.textContent = photo.name.replace(/\.[^.]+$/, '');
+        const meta = document.createElement('div');
+        meta.className = 'photo-meta';
+        meta.textContent = `${photo.year}년 · ${photo.category}`;
+        info.append(title, meta);
+        card.append(image, info);
+        grid.append(card);
+      });
+    } catch (error) {
+      grid.innerHTML = `<div class="empty">${error.message}</div>`;
     }
-
-    photos.sort((a, b) => b.year - a.year).forEach((photo) => {
-      const card = document.createElement('article');
-      card.className = 'photo-card';
-
-      const image = document.createElement('img');
-      image.src = photo.data;
-      image.alt = photo.title;
-
-      const info = document.createElement('div');
-      info.className = 'photo-info';
-      info.innerHTML = `<input aria-label="사진 제목"><div class="photo-meta"><span>${photo.year}년 · ${category}</span><button class="delete">삭제</button></div>`;
-      const title = info.querySelector('input');
-      title.value = photo.title;
-      title.addEventListener('change', (event) => {
-        photo.title = event.target.value;
-        image.alt = photo.title;
-        save();
-      });
-      info.querySelector('.delete').addEventListener('click', () => {
-        if (confirm('이 사진을 삭제할까요?')) {
-          photos = photos.filter((item) => item.id !== photo.id);
-          save();
-          draw();
-        }
-      });
-      card.append(image, info);
-      grid.append(card);
-    });
   }
 
-  document.querySelector('#photoUpload').addEventListener('change', (event) => {
-    [...event.target.files].forEach((file) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        photos.push({
-          id: Date.now() + Math.random(),
-          title: file.name.replace(/\.[^.]+$/, ''),
-          year: Number(document.querySelector('#photoYear').value) || new Date().getFullYear(),
-          data: reader.result
-        });
-        save();
-        draw();
-      });
-      reader.readAsDataURL(file);
-    });
-    event.target.value = '';
-  });
-
-  draw();
+  window.addEventListener('farm-gallery-updated', () => setTimeout(draw, 1500));
+  await draw();
 }
 
 renderCalendar();

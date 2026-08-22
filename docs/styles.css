@@ -193,3 +193,75 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
   .cloud { animation: none; }
   * { scroll-behavior: auto !important; }
 }
+
+/* GitHub-backed photo archive */
+.admin-open {
+  border: 0;
+  border-radius: 99px;
+  padding: 10px 15px;
+  background: #355b44;
+  color: white;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.repo-banner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+  padding: 23px 28px;
+  border-radius: 20px;
+  background: #355b44;
+  color: white;
+  box-shadow: var(--shadow);
+}
+.repo-banner > span { font-size: 36px; color: #f1d989; }
+.repo-banner h2, .repo-banner p { margin: 0; }
+.repo-banner p { margin-top: 4px; color: #d5dfd8; font-size: 13px; }
+.repo-banner button { margin-left: auto; border: 0; border-radius: 99px; padding: 12px 17px; background: #c9603d; color: white; font-weight: 800; cursor: pointer; }
+.photo-info strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.admin-overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(24, 43, 33, .68);
+  backdrop-filter: blur(8px);
+}
+.admin-overlay[hidden] { display: none; }
+.admin-dialog { width: min(820px, 100%); max-height: 90vh; overflow: auto; border-radius: 24px; background: #f8f0d9; box-shadow: 0 30px 90px rgba(0,0,0,.35); }
+.admin-dialog > header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; border-bottom: 1px solid rgba(53,91,68,.15); background: rgba(248,240,217,.95); }
+.admin-dialog h2 { margin: 4px 0 0; }
+.admin-dialog > header button { border: 0; background: none; color: #355b44; font-size: 34px; cursor: pointer; }
+.admin-content { display: grid; gap: 18px; padding: 26px; }
+.admin-card { padding: 23px; border: 1px solid rgba(53,91,68,.13); border-radius: 18px; background: #fffaf0; }
+.admin-card h3 { margin-top: 0; }
+.admin-card p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+.admin-card code { color: #a44e35; }
+.admin-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.admin-row > input, .admin-row select { min-width: 130px; flex: 1; border: 1px solid #ccd2c5; border-radius: 10px; padding: 12px; background: white; }
+.admin-row .btn { padding: 12px 15px; }
+.file-picker input { display: none; }
+.admin-status { min-height: 20px; margin-bottom: 0 !important; color: #4d7351 !important; font-weight: 700; }
+.admin-status.error { color: #ad412c !important; }
+.repo-photo-list { display: grid; gap: 9px; margin: 20px 0 0; padding: 0; list-style: none; }
+.repo-photo-list li { display: grid; grid-template-columns: 55px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 9px; border-radius: 12px; background: #f2ecdd; }
+.repo-photo-list img { width: 55px; height: 45px; border-radius: 8px; object-fit: cover; }
+.repo-photo-list span { overflow: hidden; color: #4d5f53; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.repo-photo-list div { display: flex; gap: 5px; }
+.repo-photo-list button { border: 0; border-radius: 7px; padding: 6px 8px; background: #dce6d4; color: #355b44; font-size: 11px; cursor: pointer; }
+.repo-photo-list button.danger { background: #f2d9d0; color: #a33d2d; }
+
+@media (max-width: 700px) {
+  .admin-open { display: none; }
+  .repo-banner { align-items: flex-start; flex-wrap: wrap; }
+  .repo-banner button { width: 100%; margin-left: 0; }
+  .repo-photo-list li { grid-template-columns: 45px minmax(0,1fr); }
+  .repo-photo-list div { grid-column: 1 / -1; }
+}
