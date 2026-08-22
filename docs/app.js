@@ -56,6 +56,17 @@ const cropNamesEn = {
   '당근': 'Carrot', '시금치': 'Spinach', '쪽파': 'Scallion', '마늘': 'Garlic'
 };
 
+const cropIcons = {
+  '감자': '🥔', '완두': '🫛', '양배추': '🥬', '배추': '🥬', '브로콜리': '🥦',
+  '근대': '🥬', '당귀': '🌿', '미나리': '🌿', '부추': '🌱', '상추': '🥬',
+  '샐러리': '🌿', '쑥갓': '🌼', '열무': '🌱', '케일': '🥬', '파슬리': '🌿',
+  '강낭콩': '🫘', '비트': '🫜', '오이': '🥒', '청경채': '🥬', '토마토': '🍅',
+  '가지': '🍆', '고구마': '🍠', '고추': '🌶️', '땅콩': '🥜', '옥수수': '🌽',
+  '멜론': '🍈', '참외': '🍈', '수박': '🍉', '오크라': '🌶️', '토란': '🍠',
+  '아몬드': '🌰', '대파': '🌱', '양파': '🧅', '무': '🫜', '갓': '🥬',
+  '당근': '🥕', '시금치': '🥬', '쪽파': '🌱', '마늘': '🧄'
+};
+
 const isEnglish = () => window.FarmI18n?.language === 'en';
 const translate = (key, korean) => window.FarmI18n?.t(key, korean) || korean;
 const displayCategory = (value) => isEnglish() ? ({ '아지트': 'Retreat', '텃밭': 'Garden', '바베큐': 'Barbecue', '농기구': 'Farm Tools' }[value] || value) : value;
@@ -71,7 +82,7 @@ function renderCalendar() {
   const calendar = document.querySelector('.calendar');
   if (!calendar) return;
 
-  calendar.innerHTML = `<div class="cell month">${translate('cropHeader', '우정읍 텃밭 작물')}</div>` +
+  calendar.innerHTML = `<div class="cell month crop-heading"><span aria-hidden="true">🌱</span>${translate('cropHeader', '우정읍 텃밭 작물')}</div>` +
     Array.from({ length: 12 }, (_, index) =>
       `<div class="cell month">${isEnglish() ? index + 1 : `${index + 1}월`}</div>`
     ).join('');
@@ -93,7 +104,8 @@ function renderCalendar() {
       cells.push(`<div class="cell ${active ? `season ${month === crop.harvest ? 'harvest' : 'plant'}` : ''}">${label}</div>`);
     }
 
-    row.innerHTML = `<div class="cell crop-name">${isEnglish() ? cropNamesEn[crop.name] : crop.name}</div>${cells.join('')}`;
+    const displayName = isEnglish() ? cropNamesEn[crop.name] : crop.name;
+    row.innerHTML = `<div class="cell crop-name"><span class="crop-icon" aria-hidden="true">${cropIcons[crop.name] || '🌱'}</span><span>${displayName}</span></div>${cells.join('')}`;
     calendar.append(row);
   });
 
