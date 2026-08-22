@@ -45,6 +45,21 @@ const crops = [
   { name: '마늘', plant: 10, harvest: 6 }
 ];
 
+const cropNamesEn = {
+  '감자': 'Potato', '완두': 'Pea', '양배추': 'Cabbage', '배추': 'Napa cabbage', '브로콜리': 'Broccoli',
+  '근대': 'Chard', '당귀': 'Korean angelica', '미나리': 'Water parsley', '부추': 'Garlic chives', '상추': 'Lettuce',
+  '샐러리': 'Celery', '쑥갓': 'Crown daisy', '열무': 'Young radish', '케일': 'Kale', '파슬리': 'Parsley',
+  '강낭콩': 'Kidney bean', '비트': 'Beet', '오이': 'Cucumber', '청경채': 'Bok choy', '토마토': 'Tomato',
+  '가지': 'Eggplant', '고구마': 'Sweet potato', '고추': 'Pepper', '땅콩': 'Peanut', '옥수수': 'Corn',
+  '멜론': 'Melon', '참외': 'Korean melon', '수박': 'Watermelon', '오크라': 'Okra', '토란': 'Taro',
+  '아몬드': 'Almond', '대파': 'Green onion', '양파': 'Onion', '무': 'Radish', '갓': 'Mustard greens',
+  '당근': 'Carrot', '시금치': 'Spinach', '쪽파': 'Scallion', '마늘': 'Garlic'
+};
+
+const isEnglish = () => window.FarmI18n?.language === 'en';
+const translate = (key, korean) => window.FarmI18n?.t(key, korean) || korean;
+const displayCategory = (value) => isEnglish() ? ({ '아지트': 'Retreat', '텃밭': 'Garden', '바베큐': 'Barbecue', '농기구': 'Farm Tools' }[value] || value) : value;
+
 function isInSeason(month, start, end) {
   if (!start || !end) return false;
   return start <= end
@@ -56,34 +71,34 @@ function renderCalendar() {
   const calendar = document.querySelector('.calendar');
   if (!calendar) return;
 
-  calendar.innerHTML = '<div class="cell month">우정읍 텃밭 작물</div>' +
+  calendar.innerHTML = `<div class="cell month">${translate('cropHeader', '우정읍 텃밭 작물')}</div>` +
     Array.from({ length: 12 }, (_, index) =>
-      `<div class="cell month">${index + 1}월</div>`
+      `<div class="cell month">${isEnglish() ? index + 1 : `${index + 1}월`}</div>`
     ).join('');
 
   crops.forEach((crop) => {
     const row = document.createElement('div');
     const start = crop.sow || crop.plant;
     row.className = 'crop-row';
-    row.dataset.name = crop.name;
+    row.dataset.name = `${crop.name} ${cropNamesEn[crop.name] || ''}`.toLocaleLowerCase();
     row.style.display = 'contents';
 
     const cells = [];
     for (let month = 1; month <= 12; month += 1) {
       const active = isInSeason(month, start, crop.harvest);
       let label = '';
-      if (month === crop.sow) label = '파종';
-      if (month === crop.plant) label = '정식';
-      if (month === crop.harvest) label = '수확';
+      if (month === crop.sow) label = translate('sow', '파종');
+      if (month === crop.plant) label = translate('plant', '정식');
+      if (month === crop.harvest) label = translate('harvest', '수확');
       cells.push(`<div class="cell ${active ? `season ${month === crop.harvest ? 'harvest' : 'plant'}` : ''}">${label}</div>`);
     }
 
-    row.innerHTML = `<div class="cell crop-name">${crop.name}</div>${cells.join('')}`;
+    row.innerHTML = `<div class="cell crop-name">${isEnglish() ? cropNamesEn[crop.name] : crop.name}</div>${cells.join('')}`;
     calendar.append(row);
   });
 
   document.querySelector('#cropSearch')?.addEventListener('input', (event) => {
-    const query = event.target.value.trim();
+    const query = event.target.value.trim().toLocaleLowerCase();
     document.querySelectorAll('.crop-row').forEach((row) => {
       row.classList.toggle('is-hidden', Boolean(query) && !row.dataset.name.includes(query));
     });
@@ -100,13 +115,13 @@ async function initGallery() {
   document.querySelectorAll('.tab').forEach((tab) => {
     tab.classList.toggle('active', tab.textContent.trim() === category);
   });
-  document.querySelector('#categoryName').textContent = category;
+  document.querySelector('#categoryName').textContent = displayCategory(category);
 
   async function draw() {
-    grid.innerHTML = '<div class="empty">GitHub 저장소에서 사진을 불러오는 중이에요…</div>';
+    grid.innerHTML = `<div class="empty">${translate('loading', 'GitHub 저장소에서 사진을 불러오는 중이에요…')}</div>`;
     try {
       const response = await fetch(`photos/manifest.json?cache=${Date.now()}`, { cache: 'no-store' });
-      if (!response.ok) throw new Error('사진 목록을 불러오지 못했습니다.');
+      if (!response.ok) throw new Error(translate('loadError', '사진 목록을 불러오지 못했습니다.'));
       const manifest = await response.json();
       const photos = manifest.photos
         .filter((photo) => photo.category === category)
@@ -114,7 +129,7 @@ async function initGallery() {
 
       grid.replaceChildren();
       if (!photos.length) {
-        grid.innerHTML = '<div class="empty"><b>아직 담긴 사진이 없어요.</b><br><br>관리자 메뉴에서 GitHub 저장소에 첫 사진을 기록해 보세요.</div>';
+        grid.innerHTML = `<div class="empty">${translate('emptyGallery', '<b>아직 담긴 사진이 없어요.</b><br><br>관리자 메뉴에서 GitHub 저장소에 첫 사진을 기록해 보세요.')}</div>`;
         return;
       }
 
@@ -131,7 +146,7 @@ async function initGallery() {
         title.textContent = photo.name.replace(/\.[^.]+$/, '');
         const meta = document.createElement('div');
         meta.className = 'photo-meta';
-        meta.textContent = `${photo.year}년 · ${photo.category}`;
+        meta.textContent = isEnglish() ? `${photo.year} · ${displayCategory(photo.category)}` : `${photo.year}년 · ${photo.category}`;
         info.append(title, meta);
         card.append(image, info);
         grid.append(card);

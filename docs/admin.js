@@ -389,9 +389,14 @@
 
   function init() {
     const now = new Date().getFullYear();
-    $('adminYear').innerHTML = '<option value="auto">연도 자동 감지</option>' +
+    const english = window.FarmI18n?.language === 'en';
+    $('adminCategory').innerHTML = [
+      ['아지트', english ? 'Retreat' : '아지트'], ['텃밭', english ? 'Garden' : '텃밭'],
+      ['바베큐', english ? 'Barbecue' : '바베큐'], ['농기구', english ? 'Farm Tools' : '농기구']
+    ].map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+    $('adminYear').innerHTML = `<option value="auto">${english ? 'Detect year automatically' : '연도 자동 감지'}</option>` +
       Array.from({ length: 12 }, (_, index) => now + 2 - index)
-        .map((year) => `<option value="${year}">${year}년 직접 선택</option>`).join('');
+        .map((year) => `<option value="${year}">${english ? `${year} manual` : `${year}년 직접 선택`}</option>`).join('');
     $('openAdmin').onclick = () => { $('adminOverlay').hidden = false; if (token) connect(); };
     $('closeAdmin').onclick = () => { $('adminOverlay').hidden = true; };
     $('adminOverlay').onclick = (event) => { if (event.target === $('adminOverlay')) $('adminOverlay').hidden = true; };
