@@ -102,6 +102,94 @@
     return `${stem || 'photo'}.${extension}`;
   }
 
+  function validYear(year) {
+    const number = Number(year);
+    return Number.isInteger(number) && number >= 1900 && number <= new Date().getFullYear() + 2;
+  }
+
+  function yearFromFilename(name) {
+    const timestamp = name.match(/^((?:19|20)\d{2})\d{4}(?:[-_]?\d{6})?/);
+    if (timestamp && validYear(timestamp[1])) return Number(timestamp[1]);
+    const separated = name.match(/(?:^|\D)((?:19|20)\d{2})(?=\D|$)/);
+    return separated && validYear(separated[1]) ? Number(separated[1]) : null;
+  }
+
+  function exifAscii(view, offset, length) {
+    let value = '';
+    for (let index = 0; index < length; index += 1) {
+      const character = view.getUint8(offset + index);
+      if (!character) break;
+      value += String.fromCharCode(character);
+    }
+    return value;
+  }
+
+  function exifYearFromJpeg(buffer) {
+    const view = new DataView(buffer);
+    if (view.byteLength < 4 || view.getUint16(0) !== 0xffd8) return null;
+    let marker = 2;
+    while (marker + 4 < view.byteLength) {
+      if (view.getUint8(marker) !== 0xff) break;
+      const type = view.getUint8(marker + 1);
+      const size = view.getUint16(marker + 2);
+      if (type === 0xe1 && marker + 10 < view.byteLength && exifAscii(view, marker + 4, 6) === 'Exif') {
+        const tiff = marker + 10;
+        const little = view.getUint16(tiff) === 0x4949;
+        const uint16 = (offset) => view.getUint16(offset, little);
+        const uint32 = (offset) => view.getUint32(offset, little);
+        if (uint16(tiff + 2) !== 42) return null;
+
+        function readIfd(relativeOffset, wantedTags) {
+          const offset = tiff + relativeOffset;
+          if (offset + 2 > view.byteLength) return {};
+          const result = {};
+          const count = uint16(offset);
+          for (let index = 0; index < count; index += 1) {
+            const entry = offset + 2 + index * 12;
+            if (entry + 12 > view.byteLength) break;
+            const tag = uint16(entry);
+            if (!wantedTags.includes(tag)) continue;
+            const length = uint32(entry + 4);
+            const valueOffset = length <= 4 ? entry + 8 : tiff + uint32(entry + 8);
+            if (valueOffset + length <= view.byteLength) result[tag] = exifAscii(view, valueOffset, length);
+          }
+          return result;
+        }
+
+        const ifd0Offset = uint32(tiff + 4);
+        const ifd0 = tiff + ifd0Offset;
+        if (ifd0 + 2 > view.byteLength) return null;
+        let exifOffset = null;
+        const count = uint16(ifd0);
+        for (let index = 0; index < count; index += 1) {
+          const entry = ifd0 + 2 + index * 12;
+          if (entry + 12 > view.byteLength) break;
+          if (uint16(entry) === 0x8769) exifOffset = uint32(entry + 8);
+        }
+        const dates = { ...readIfd(ifd0Offset, [0x0132]), ...(exifOffset ? readIfd(exifOffset, [0x9003, 0x9004]) : {}) };
+        const date = dates[0x9003] || dates[0x9004] || dates[0x0132];
+        const match = date?.match(/^((?:19|20)\d{2}):\d{2}:\d{2}/);
+        return match && validYear(match[1]) ? Number(match[1]) : null;
+      }
+      if (size < 2) break;
+      marker += size + 2;
+    }
+    return null;
+  }
+
+  async function detectPhotoYear(file) {
+    if (/jpe?g$/i.test(file.name)) {
+      try {
+        const exifYear = exifYearFromJpeg(await file.arrayBuffer());
+        if (exifYear) return { year: exifYear, source: 'EXIF 촬영일' };
+      } catch { /* 손상되었거나 EXIF가 없는 사진은 다음 기준을 사용한다. */ }
+    }
+    const filenameYear = yearFromFilename(file.name);
+    if (filenameYear) return { year: filenameYear, source: '파일명' };
+    const modifiedYear = new Date(file.lastModified || Date.now()).getFullYear();
+    return { year: modifiedYear, source: '파일 수정일' };
+  }
+
   async function listDirectory(path) {
     try {
       return await github(repoPath(`contents/${encodeURI(path)}?ref=${REPO.branch}`));
@@ -114,6 +202,11 @@
   async function refreshAdminList() {
     const category = $('adminCategory').value;
     const year = $('adminYear').value;
+    if (year === 'auto') {
+      $('repoPhotoList').replaceChildren();
+      status('업로드할 사진마다 연도를 자동으로 감지합니다. 기존 사진을 관리하려면 연도를 직접 선택하세요.');
+      return;
+    }
     const entries = await listDirectory(`${BASE}/${category}/${year}`);
     const images = entries.filter((entry) => entry.type === 'file' && ALLOWED.includes(entry.name.split('.').pop().toLowerCase()));
     const list = $('repoPhotoList');
@@ -151,15 +244,24 @@
     const files = [...$('repoUpload').files];
     if (!files.length) return status('업로드할 사진을 선택해 주세요.', true);
     const category = $('adminCategory').value;
-    const year = $('adminYear').value;
+    const selectedYear = $('adminYear').value;
     $('uploadRepoBtn').disabled = true;
     status(`${files.length}장의 사진을 GitHub에 저장하는 중…`);
     try {
-      const current = await listDirectory(`${BASE}/${category}/${year}`);
-      const used = new Set(current.map((entry) => entry.name));
       const records = [];
       const changes = [];
+      const usedByYear = new Map();
+      const detected = [];
       for (const file of files) {
+        const detection = selectedYear === 'auto'
+          ? await detectPhotoYear(file)
+          : { year: Number(selectedYear), source: '직접 선택' };
+        const year = detection.year;
+        if (!usedByYear.has(year)) {
+          const current = await listDirectory(`${BASE}/${category}/${year}`);
+          usedByYear.set(year, new Set(current.map((entry) => entry.name)));
+        }
+        const used = usedByYear.get(year);
         let name = safeName(file.name);
         if (used.has(name)) {
           const dot = name.lastIndexOf('.');
@@ -169,11 +271,12 @@
         const path = `${BASE}/${category}/${year}/${name}`;
         changes.push({ path, base64: bytesToBase64(new Uint8Array(await file.arrayBuffer())) });
         records.push({ category, year: Number(year), name, path: path.replace(/^docs\//, '') });
+        detected.push(`${name} → ${year}년(${detection.source})`);
       }
-      await updateManifest((photos) => photos.push(...records), changes, `Add ${files.length} farm photo(s) to ${category}/${year}`);
+      await updateManifest((photos) => photos.push(...records), changes, `Add ${files.length} farm photo(s) to ${category}`);
       $('repoUpload').value = '';
-      status('GitHub 저장 완료! Pages 반영에는 잠시 시간이 걸릴 수 있습니다.');
-      await refreshAdminList();
+      status(`GitHub 저장 완료: ${detected.join(', ')}. Pages 반영에는 잠시 시간이 걸릴 수 있습니다.`);
+      if (selectedYear !== 'auto') await refreshAdminList();
       window.dispatchEvent(new Event('farm-gallery-updated'));
     } catch (error) {
       status(error.message, true);
@@ -258,8 +361,9 @@
 
   function init() {
     const now = new Date().getFullYear();
-    $('adminYear').innerHTML = Array.from({ length: 12 }, (_, index) => now + 2 - index)
-      .map((year) => `<option value="${year}" ${year === now ? 'selected' : ''}>${year}년</option>`).join('');
+    $('adminYear').innerHTML = '<option value="auto">연도 자동 감지</option>' +
+      Array.from({ length: 12 }, (_, index) => now + 2 - index)
+        .map((year) => `<option value="${year}">${year}년 직접 선택</option>`).join('');
     $('openAdmin').onclick = () => { $('adminOverlay').hidden = false; if (token) connect(); };
     $('closeAdmin').onclick = () => { $('adminOverlay').hidden = true; };
     $('adminOverlay').onclick = (event) => { if (event.target === $('adminOverlay')) $('adminOverlay').hidden = true; };
