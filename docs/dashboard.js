@@ -1,6 +1,9 @@
 (() => {
-  const month = new Date().getMonth() + 1;
-  const monthLabel = isEnglish() ? new Intl.DateTimeFormat('en', { month: 'long' }).format(new Date(2026, month - 1)) : `${month}월`;
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const monthLabel = isEnglish()
+    ? new Intl.DateTimeFormat('en', { year: 'numeric', month: 'long' }).format(now)
+    : `${now.getFullYear()}년 ${month}월`;
   document.querySelector('#dashboardMonth').textContent = monthLabel;
 
   const sortedNames = (items) => items.map((crop) => isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name)
