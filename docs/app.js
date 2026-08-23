@@ -83,13 +83,23 @@ const crops = [
   { name: '측백나무', plant: 3, end: 11 },
   { name: '털달개비', plant: 4, bloom: 9 },
   { name: '콜라비', sow: 3, harvest: 11 },
-  { name: '주키니 호박', sow: 3, plant: 5, harvest: 10 }
+  { name: '주키니 호박', sow: 3, plant: 5, harvest: 10 },
+  { name: '복숭아', plant: 3, harvest: 8 },
+  { name: '배나무', plant: 3, harvest: 10 },
+  { name: '보리수나무', plant: 3, harvest: 6 },
+  { name: '체리나무', plant: 3, harvest: 6 },
+  { name: '모과나무', plant: 3, harvest: 10 },
+  { name: '무화과', plant: 3, harvest: 10 },
+  { name: '석류나무', plant: 3, harvest: 10 },
+  { name: '동백나무', plant: 10, bloom: 4 },
+  { name: '흑감나무', plant: 3, harvest: 11 },
+  { name: '산수유', plant: 3, harvest: 10 }
 ];
 
 const fruitCrops = new Set(['멜론', '블루베리', '수박', '아몬드', '참외']);
-const fruitTreeCrops = new Set(['감나무', '대추나무', '매실나무', '밤나무', '사과나무', '살구나무', '앵두나무', '자두나무', '호두나무']);
+const fruitTreeCrops = new Set(['감나무', '대추나무', '매실나무', '모과나무', '무화과', '배나무', '밤나무', '보리수나무', '복숭아', '사과나무', '산수유', '살구나무', '석류나무', '앵두나무', '자두나무', '체리나무', '호두나무', '흑감나무']);
 const flowerCrops = new Set(['금계국', '능소화', '털달개비']);
-const treeCrops = new Set(['두릅나무', '산초나무', '삼색버드나무', '음나무(엄나무)', '초피나무', '측백나무', '헛개나무']);
+const treeCrops = new Set(['동백나무', '두릅나무', '산초나무', '삼색버드나무', '음나무(엄나무)', '초피나무', '측백나무', '헛개나무']);
 const specialCrops = new Set(['목화', '아피오스', '천연초', '초석잠', '카싸바', '히카마']);
 const categoryOrder = ['vegetable', 'fruit', 'fruitTree', 'flower', 'tree', 'special'];
 const cropCategory = (name) => fruitCrops.has(name) ? 'fruit'
@@ -106,7 +116,9 @@ const cropNamesEn = {
   '가지': 'Eggplant', '고구마': 'Sweet potato', '고추': 'Pepper', '땅콩': 'Peanut', '옥수수': 'Corn',
   '멜론': 'Melon', '참외': 'Korean melon', '수박': 'Watermelon', '오크라': 'Okra', '토란': 'Taro',
   '아몬드': 'Almond', '대파': 'Green onion', '양파': 'Onion', '무우': 'Radish', '갓': 'Mustard greens',
-  '당근': 'Carrot', '시금치': 'Spinach', '쪽파': 'Scallion', '마늘': 'Garlic'
+  '당근': 'Carrot', '시금치': 'Spinach', '쪽파': 'Scallion', '마늘': 'Garlic',
+  '복숭아': 'Peach tree', '배나무': 'Pear tree', '보리수나무': 'Cherry silverberry', '체리나무': 'Cherry tree', '모과나무': 'Quince tree',
+  '무화과': 'Fig tree', '석류나무': 'Pomegranate tree', '동백나무': 'Camellia', '흑감나무': 'Black persimmon tree', '산수유': 'Cornelian cherry'
 };
 
 const cropIcons = {
@@ -117,7 +129,9 @@ const cropIcons = {
   '가지': '🍆', '고구마': '🍠', '고추': '🌶️', '땅콩': '🥜', '옥수수': '🌽',
   '멜론': '🍈', '참외': '🍈', '수박': '🍉', '오크라': '🌶️', '토란': '🍠',
   '아몬드': '🌰', '대파': '🌱', '양파': '🧅', '무우': '🫜', '갓': '🥬',
-  '당근': '🥕', '시금치': '🥬', '쪽파': '🌱', '마늘': '🧄'
+  '당근': '🥕', '시금치': '🥬', '쪽파': '🌱', '마늘': '🧄',
+  '복숭아': '🍑', '배나무': '🍐', '보리수나무': '🔴', '체리나무': '🍒', '모과나무': '🍐',
+  '무화과': '🟣', '석류나무': '🔴', '동백나무': '🌺', '흑감나무': '🌳', '산수유': '🔴'
 };
 
 const isEnglish = () => window.FarmI18n?.language === 'en';
