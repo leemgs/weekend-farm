@@ -26,7 +26,10 @@
       <div class="month-badge"><small data-i18n="currentPlan">현재 농사 계획</small><strong id="dashboardMonth"></strong></div>
     </section>
     <section class="dashboard-stats" aria-label="농장 현황">
-      <article><span>🌱</span><div><strong id="annualCropCount">—</strong><small data-i18n="annualCrops">올해 재배 작물</small></div></article>
+      <article class="crop-summary">
+        <div class="crop-total"><span>🌱</span><div><strong id="annualCropCount">—</strong><small data-i18n="totalCrops">총합</small></div></div>
+        <div><h2 data-i18n="annualCrops">올해 재배 작물 현황</h2><ul id="categoryCropCounts" class="category-counts"></ul></div>
+      </article>
       <article><span>🧺</span><div><strong id="harvestCropCount">—</strong><small data-i18n="harvestCrops">이번 달 수확 작물</small></div></article>
       <article><span>📷</span><div><strong id="photoCount">—</strong><small data-i18n="storedPhotos">보관된 농장 사진</small></div></article>
     </section>

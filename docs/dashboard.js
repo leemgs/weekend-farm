@@ -12,6 +12,23 @@
   };
   document.querySelector('#annualCropCount').textContent = crops.length;
   document.querySelector('#harvestCropCount').textContent = taskGroups.harvestTasks.length;
+  const categoryLabels = {
+    vegetable: ['vegetableCategory', '채소'],
+    fruit: ['fruitCategory', '과일'],
+    fruitTree: ['fruitTreeCategory', '과실수'],
+    flower: ['flowerCategory', '꽃'],
+    tree: ['treeCategory', '나무'],
+    special: ['specialCategory', '특용작물']
+  };
+  const categoryCounts = Object.fromEntries(categoryOrder.map((category) => [category, 0]));
+  crops.forEach((crop) => { categoryCounts[cropCategory(crop.name)] += 1; });
+  document.querySelector('#categoryCropCounts').replaceChildren(...categoryOrder.map((category) => {
+    const item = document.createElement('li');
+    const [key, korean] = categoryLabels[category];
+    item.className = category;
+    item.innerHTML = `<span>${translate(key, korean)}</span><strong>${categoryCounts[category]}</strong>`;
+    return item;
+  }));
 
   Object.entries(taskGroups).forEach(([id, items]) => {
     const list = document.querySelector(`#${id}`);
