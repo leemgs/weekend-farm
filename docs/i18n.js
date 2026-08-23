@@ -4,7 +4,7 @@
   const STORAGE_KEY = 'weekend_farm_language';
   const messages = {
     en: {
-      home: 'Home', calendar: 'Farm Calendar', gallery: 'Photo Album', record: 'Add a Memory',
+      home: 'Home', dashboard: 'Dashboard', calendar: 'Farm Calendar', gallery: 'Photo Album', record: 'Add a Memory',
       heroTitle: 'A little farm<br><em>where the breeze rests</em>',
       heroCopy: 'Follow the sea breeze to our green path in Ujeong-eup, Hwaseong. We plant seeds, gather around the fire, and preserve the stories each season brings.',
       plan: 'What shall we plant today? <span>→</span>', memories: 'Browse memories',
@@ -16,6 +16,8 @@
       letterCard: 'Letter from the Farm', letterDesc: 'Even a small harvest becomes abundant when shared. See you this weekend.', together: 'Slowly, joyfully, together',
       calendarTitle: 'Vegetable Growing Calendar', calendarIntro: 'Based on outdoor growing conditions in coastal Ujeong-eup, Hwaseong. Adjust sowing and transplanting dates for sea winds, late frost, and soil temperature.',
       searchPlaceholder: 'Search vegetables or fruits', growPeriod: 'Sowing · transplanting · growing', harvestPeriod: 'Harvest time', categoryHeader: 'Category', allCategories: 'All', cropHeader: 'Ujeong-eup crops', vegetableCategory: 'Vegetable', fruitCategory: 'Fruit', sow: 'Sow', plant: 'Plant', harvest: 'Harvest',
+      glossaryTitle: 'Growing Terms', glossaryIntro: 'Learn what each label in the calendar means.', sowTerm: 'Sowing', sowDefinition: 'Placing seeds directly in the field or in seed trays.', plantTerm: 'Transplanting', plantDefinition: 'Moving established seedlings into their permanent garden bed.', growTerm: 'Growing', growDefinition: 'The period for watering, weeding, feeding, and caring for the crop.', harvestTerm: 'Harvest', harvestDefinition: 'The time to gather the mature, edible parts of the crop.',
+      dashboardTitle: 'Your Farm This Month', dashboardIntro: 'See what to sow, transplant, harvest, and record before your next farm weekend.', currentPlan: 'Current farm plan', activeCrops: 'Crops growing this month', harvestCrops: 'Crops to harvest this month', storedPhotos: 'Farm photos archived', monthlyTasks: 'This Month’s Farm Work', viewCalendar: 'View full calendar →', sowShort: 'Put seeds in the soil', plantShort: 'Move seedlings to the bed', harvestShort: 'Gather mature crops', noTasks: 'No crops scheduled this month.', quickLinks: 'Farm Management Shortcuts', calendarQuick: 'Review the yearly schedule for every crop.', galleryQuick: 'Record changes around the farm in photos.',
       galleryTitle: 'Four Seasons on Our Farm', galleryIntro: 'Photos are stored by year and category in the leemgs/weekend-farm GitHub repository—not temporary browser storage.',
       retreat: 'Retreat', gardenCategory: 'Garden', barbecue: 'Barbecue', tools: 'Farm Tools', categoryRecord: ' Records', permanentAlbum: 'A permanent album connected to GitHub Pages.', managePhotos: 'Add · edit · delete photos', loading: 'Loading photos from GitHub…', emptyGallery: '<b>No photos yet.</b><br><br>Use Photo Manager to add the first memory.', loadError: 'Could not load the photo list.',
       photoAdmin: 'Photo Manager', adminTitle: 'Manage Photo Repository', connectTitle: '1. Connect to GitHub', connected: 'Connected', connect: 'Connect', disconnect: 'Disconnect',
@@ -44,7 +46,7 @@
       button.classList.toggle('active', button.dataset.lang === language);
       button.setAttribute('aria-pressed', String(button.dataset.lang === language));
     });
-    document.title = language === 'en' ? `Weekend Farm Retreat${location.pathname.includes('calendar') ? ' | Calendar' : location.pathname.includes('gallery') ? ' | Photo Album' : ''}` : document.title;
+    document.title = language === 'en' ? `Weekend Farm Retreat${location.pathname.includes('dashboard') ? ' | Dashboard' : location.pathname.includes('calendar') ? ' | Calendar' : location.pathname.includes('gallery') ? ' | Photo Album' : ''}` : document.title;
     window.dispatchEvent(new CustomEvent('farm-language-change', { detail: { language } }));
   }
 

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>농장 대시보드 | 주말농장 아지트</title>
+  <meta name="description" content="이번 달 농작업과 주말농장 기록을 한눈에 확인하는 대시보드">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="주요 메뉴">
+      <a class="brand" href="index.html"><i class="brand-mark">葉</i><span>주말농장 아지트<small>WEEKEND FARM RETREAT</small></span></a>
+      <div class="links">
+        <a href="index.html" data-i18n="home">홈</a>
+        <a class="active" href="dashboard.html" data-i18n="dashboard">대시보드</a>
+        <a href="calendar.html" data-i18n="calendar">농장 캘린더</a>
+        <a href="gallery.html" data-i18n="gallery">사진첩</a>
+        <div class="language-toggle" aria-label="언어 선택"><button type="button" data-lang="ko">한글</button><button type="button" data-lang="en">EN</button></div>
+      </div>
+    </nav>
+  </header>
+  <main class="page-main shell dashboard-main">
+    <section class="dashboard-hero">
+      <div><span class="eyebrow">Farm dashboard</span><h1 class="page-title" data-i18n="dashboardTitle">이번 달 농장 한눈에 보기</h1><p data-i18n="dashboardIntro">파종부터 수확, 사진 기록까지 이번 주말에 챙길 일을 한곳에서 확인하세요.</p></div>
+      <div class="month-badge"><small data-i18n="currentPlan">현재 농사 계획</small><strong id="dashboardMonth"></strong></div>
+    </section>
+    <section class="dashboard-stats" aria-label="농장 현황">
+      <article><span>🌱</span><div><strong id="activeCropCount">—</strong><small data-i18n="activeCrops">이번 달 재배 작물</small></div></article>
+      <article><span>🧺</span><div><strong id="harvestCropCount">—</strong><small data-i18n="harvestCrops">이번 달 수확 작물</small></div></article>
+      <article><span>📷</span><div><strong id="photoCount">—</strong><small data-i18n="storedPhotos">보관된 농장 사진</small></div></article>
+    </section>
+    <section class="task-board" aria-labelledby="monthlyTasksTitle">
+      <div class="dashboard-section-heading"><div><span class="eyebrow">Monthly work</span><h2 id="monthlyTasksTitle" data-i18n="monthlyTasks">이번 달 농작업</h2></div><a href="calendar.html" data-i18n="viewCalendar">전체 캘린더 보기 →</a></div>
+      <div class="task-columns">
+        <article class="task-card sow"><header><span>🌰</span><div><h3 data-i18n="sowTerm">파종</h3><small data-i18n="sowShort">씨앗을 뿌려요</small></div></header><ul id="sowTasks"></ul></article>
+        <article class="task-card plant"><header><span>🌱</span><div><h3 data-i18n="plantTerm">정식</h3><small data-i18n="plantShort">모종을 옮겨 심어요</small></div></header><ul id="plantTasks"></ul></article>
+        <article class="task-card harvest"><header><span>🧺</span><div><h3 data-i18n="harvestTerm">수확</h3><small data-i18n="harvestShort">익은 작물을 거둬요</small></div></header><ul id="harvestTasks"></ul></article>
+      </div>
+    </section>
+    <section class="dashboard-links" aria-labelledby="quickLinksTitle">
+      <div class="dashboard-section-heading"><div><span class="eyebrow">Farm records</span><h2 id="quickLinksTitle" data-i18n="quickLinks">농장 관리 바로가기</h2></div></div>
+      <div class="quick-link-grid"><a href="calendar.html"><span>▦</span><div><strong data-i18n="calendarCard">텃밭 캘린더</strong><small data-i18n="calendarQuick">작물별 연간 일정을 확인하세요.</small></div><b>→</b></a><a href="gallery.html"><span>▣</span><div><strong data-i18n="gallery">사진첩</strong><small data-i18n="galleryQuick">농장의 변화를 사진으로 기록하세요.</small></div><b>→</b></a></div>
+    </section>
+  </main>
+  <footer><div class="shell">© 2026 Weekend Farm Retreat</div></footer>
+  <script src="i18n.js"></script><script src="app.js"></script><script src="dashboard.js"></script>
+</body>
+</html>
