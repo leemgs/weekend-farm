@@ -90,10 +90,14 @@ function renderCalendar() {
       `<div class="cell month">${isEnglish() ? index + 1 : `${index + 1}월`}</div>`
     ).join('');
 
-  [...crops].sort((a, b) => a.name.localeCompare(b.name, 'ko')).forEach((crop) => {
+  [...crops].sort((a, b) => {
+    const categoryOrder = Number(fruitCrops.has(a.name)) - Number(fruitCrops.has(b.name));
+    return categoryOrder || a.name.localeCompare(b.name, 'ko');
+  }).forEach((crop) => {
     const row = document.createElement('div');
     const start = crop.sow || crop.plant;
     row.className = 'crop-row';
+    row.dataset.category = fruitCrops.has(crop.name) ? 'fruit' : 'vegetable';
     row.dataset.name = `${crop.name} ${cropNamesEn[crop.name] || ''}`.toLocaleLowerCase();
     row.style.display = 'contents';
 
@@ -114,12 +118,19 @@ function renderCalendar() {
     calendar.append(row);
   });
 
-  document.querySelector('#cropSearch')?.addEventListener('input', (event) => {
-    const query = event.target.value.trim().toLocaleLowerCase();
+  const searchInput = document.querySelector('#cropSearch');
+  const categorySelect = document.querySelector('#cropCategory');
+  const applyCropFilters = () => {
+    const query = searchInput.value.trim().toLocaleLowerCase();
+    const selectedCategory = categorySelect.value;
     document.querySelectorAll('.crop-row').forEach((row) => {
-      row.classList.toggle('is-hidden', Boolean(query) && !row.dataset.name.includes(query));
+      const matchesSearch = !query || row.dataset.name.includes(query);
+      const matchesCategory = !selectedCategory || row.dataset.category === selectedCategory;
+      row.classList.toggle('is-hidden', !matchesSearch || !matchesCategory);
     });
-  });
+  };
+  searchInput.addEventListener('input', applyCropFilters);
+  categorySelect.addEventListener('change', applyCropFilters);
 }
 
 const params = new URLSearchParams(location.search);
