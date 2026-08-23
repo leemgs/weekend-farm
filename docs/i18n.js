@@ -22,7 +22,7 @@
       tokenHelp: 'Enter a fine-grained token with <b>Contents: Read and write</b> access to this repository. It is kept only in this tab’s <code>sessionStorage</code> and is never committed.',
       manageTitle: '2. Manage Photos', manageHelp: 'Choose a category and detect the year automatically or select it manually. Auto detection checks EXIF date, filename, then file modified date. Existing filenames always require confirmation before overwrite.',
       autoYear: 'Detect year automatically', choosePhotos: 'Choose photos', saveGithub: 'Save to GitHub',
-      perPage: 'Photos per page', previous: 'Previous', next: 'Next', pageOf: 'Page {current} of {total} · {count} photos'
+      perPage: 'Photos per page', byYear: 'By year', previous: 'Previous', next: 'Next', pageOf: 'Page {current} of {total} · {count} photos'
     }
   };
 

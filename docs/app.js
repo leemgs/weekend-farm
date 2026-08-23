@@ -132,26 +132,32 @@ async function initGallery() {
   const previousButton = document.querySelector('#galleryPrev');
   const nextButton = document.querySelector('#galleryNext');
   const pageStatus = document.querySelector('#galleryPageStatus');
+  const yearFilter = document.querySelector('#galleryYearFilter');
+  const yearFilterSummary = document.querySelector('#yearFilterSummary');
   let photos = [];
+  let filteredPhotos = [];
   let currentPage = 1;
 
   function renderPage() {
     grid.replaceChildren();
+    const selectedYears = [...yearFilter.querySelectorAll('input:checked')].map((input) => Number(input.value));
+    filteredPhotos = selectedYears.length ? photos.filter((photo) => selectedYears.includes(Number(photo.year))) : photos;
+    yearFilterSummary.textContent = selectedYears.length ? `: ${selectedYears.sort((a, b) => b - a).join(', ')}` : '';
     const pageSize = Number(pageSizeSelect.value);
-    const totalPages = Math.max(1, Math.ceil(photos.length / pageSize));
+    const totalPages = Math.max(1, Math.ceil(filteredPhotos.length / pageSize));
     currentPage = Math.min(currentPage, totalPages);
     const start = (currentPage - 1) * pageSize;
-    const visiblePhotos = photos.slice(start, start + pageSize);
+    const visiblePhotos = filteredPhotos.slice(start, start + pageSize);
 
     previousButton.disabled = currentPage === 1;
-    nextButton.disabled = currentPage === totalPages || photos.length === 0;
+    nextButton.disabled = currentPage === totalPages || filteredPhotos.length === 0;
     const format = translate('pageOf', '{current} / {total} 페이지 · 총 {count}장');
     pageStatus.textContent = format
       .replace('{current}', currentPage)
       .replace('{total}', totalPages)
-      .replace('{count}', photos.length);
+      .replace('{count}', filteredPhotos.length);
 
-    if (!photos.length) {
+    if (!filteredPhotos.length) {
       grid.innerHTML = `<div class="empty">${translate('emptyGallery', '<b>아직 담긴 사진이 없어요.</b><br><br>관리자 메뉴에서 GitHub 저장소에 첫 사진을 기록해 보세요.')}</div>`;
       return;
     }
@@ -185,6 +191,15 @@ async function initGallery() {
       photos = manifest.photos
         .filter((photo) => photo.category === category)
         .sort((a, b) => b.year - a.year || a.name.localeCompare(b.name));
+      const years = [...new Set(photos.map((photo) => Number(photo.year)))].sort((a, b) => b - a);
+      yearFilter.replaceChildren(...years.map((year) => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = year;
+        label.append(checkbox, document.createTextNode(String(year)));
+        return label;
+      }));
       currentPage = 1;
       renderPage();
     } catch (error) {
@@ -193,9 +208,10 @@ async function initGallery() {
   }
 
   pageSizeSelect.addEventListener('change', () => { currentPage = 1; renderPage(); });
+  yearFilter.addEventListener('change', () => { currentPage = 1; renderPage(); });
   previousButton.addEventListener('click', () => { if (currentPage > 1) { currentPage -= 1; renderPage(); } });
   nextButton.addEventListener('click', () => {
-    if (currentPage * Number(pageSizeSelect.value) < photos.length) { currentPage += 1; renderPage(); }
+    if (currentPage * Number(pageSizeSelect.value) < filteredPhotos.length) { currentPage += 1; renderPage(); }
   });
   window.addEventListener('farm-gallery-updated', () => setTimeout(draw, 1500));
   await draw();

@@ -244,8 +244,14 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 .repo-banner button { margin-left: auto; border: 0; border-radius: 99px; padding: 12px 17px; background: #c9603d; color: white; font-weight: 800; cursor: pointer; }
 .photo-info strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .gallery-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 22px; padding: 12px 16px; border-radius: 14px; background: rgba(255,250,240,.8); }
+.gallery-filters { display: flex; align-items: center; gap: 18px; }
 .gallery-controls label { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; font-weight: 750; }
 .gallery-controls select { border: 1px solid #ccd2c5; border-radius: 9px; padding: 7px 28px 7px 10px; background: white; color: var(--ink); }
+.year-filter { position: relative; color: var(--muted); font-size: 12px; font-weight: 750; }
+.year-filter summary { min-width: 100px; padding: 8px 10px; border: 1px solid #ccd2c5; border-radius: 9px; background: white; color: var(--ink); cursor: pointer; list-style-position: inside; }
+.year-filter fieldset { position: absolute; z-index: 5; top: calc(100% + 6px); left: 0; display: grid; min-width: 130px; gap: 9px; margin: 0; padding: 12px; border: 1px solid #ccd2c5; border-radius: 10px; background: white; box-shadow: 0 8px 24px rgba(31,54,42,.14); }
+.year-filter fieldset label { justify-content: flex-start; cursor: pointer; }
+.year-filter input { margin: 0; accent-color: var(--green); }
 .gallery-pagination { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
 .gallery-pagination button { border: 0; border-radius: 9px; padding: 8px 12px; background: #dce6d4; color: #355b44; font-weight: 800; cursor: pointer; }
 .gallery-pagination button:disabled { opacity: .38; cursor: not-allowed; }
@@ -300,6 +306,7 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
   .repo-photo-list div { grid-column: 1 / -1; }
   .language-toggle button { padding: 5px 7px; }
   .gallery-controls { align-items: stretch; flex-direction: column; }
+  .gallery-filters { align-items: flex-start; flex-wrap: wrap; }
   .gallery-pagination { justify-content: space-between; }
 }
 .legend b { font-weight: 500; }

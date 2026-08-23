@@ -39,9 +39,15 @@
       <button id="openAdminBanner" type="button" onclick="document.querySelector('#openAdmin').click()" data-i18n="managePhotos">사진 추가·수정·삭제</button>
     </section>
     <div class="gallery-controls">
-      <label><span data-i18n="perPage">페이지당 사진 수</span>
-        <select id="galleryPageSize" aria-label="페이지당 사진 수"><option>5</option><option selected>10</option><option>20</option><option>30</option><option>50</option><option>70</option><option>100</option></select>
-      </label>
+      <div class="gallery-filters">
+        <label><span data-i18n="perPage">페이지당 사진 수</span>
+          <select id="galleryPageSize" aria-label="페이지당 사진 수"><option>5</option><option selected>10</option><option>20</option><option>30</option><option>50</option><option>70</option><option>100</option></select>
+        </label>
+        <details class="year-filter">
+          <summary><span data-i18n="byYear">연도별</span><span id="yearFilterSummary"></span></summary>
+          <fieldset id="galleryYearFilter" aria-label="연도별 사진 필터"></fieldset>
+        </details>
+      </div>
       <div class="gallery-pagination"><button id="galleryPrev" type="button" data-i18n="previous">이전</button><span id="galleryPageStatus" aria-live="polite"></span><button id="galleryNext" type="button" data-i18n="next">다음</button></div>
     </div>
     <div id="galleryGrid" class="gallery-grid"></div>
