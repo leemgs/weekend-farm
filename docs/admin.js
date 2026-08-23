@@ -202,36 +202,55 @@
 
   async function refreshAdminList() {
     const category = $('adminCategory').value;
-    const year = $('adminYear').value;
-    if (year === 'auto') {
-      $('repoPhotoList').replaceChildren();
-      status('업로드할 사진마다 연도를 자동으로 감지합니다. 기존 사진을 관리하려면 연도를 직접 선택하세요.');
-      return;
-    }
-    const entries = await listDirectory(`${BASE}/${category}/${year}`);
-    const images = entries.filter((entry) => entry.type === 'file' && ALLOWED.includes(entry.name.split('.').pop().toLowerCase()));
+    const selectedYear = $('adminYear').value;
     const list = $('repoPhotoList');
-    list.replaceChildren();
-    images.forEach((image) => {
+    list.innerHTML = '<li class="repo-list-loading">기존 사진을 불러오는 중…</li>';
+    try {
+      let images = [];
+      if (selectedYear === 'auto') {
+        const categoryEntries = await listDirectory(`${BASE}/${category}`);
+        const years = categoryEntries
+          .filter((entry) => entry.type === 'dir' && validYear(entry.name))
+          .map((entry) => entry.name);
+        const directories = await Promise.all(years.map(async (year) => ({
+          year,
+          entries: await listDirectory(`${BASE}/${category}/${year}`)
+        })));
+        images = directories.flatMap(({ year, entries }) => entries
+          .filter((entry) => entry.type === 'file' && ALLOWED.includes(entry.name.split('.').pop().toLowerCase()))
+          .map((entry) => ({ ...entry, year })));
+      } else {
+        const entries = await listDirectory(`${BASE}/${category}/${selectedYear}`);
+        images = entries
+          .filter((entry) => entry.type === 'file' && ALLOWED.includes(entry.name.split('.').pop().toLowerCase()))
+          .map((entry) => ({ ...entry, year: selectedYear }));
+      }
+      images.sort((a, b) => Number(b.year) - Number(a.year) || a.name.localeCompare(b.name));
+      list.replaceChildren();
+      images.forEach((image) => {
       const item = document.createElement('li');
       item.innerHTML = `<img alt=""><span></span><div></div>`;
       item.querySelector('img').src = image.download_url;
-      item.querySelector('span').textContent = image.name;
+      item.querySelector('span').textContent = `${image.year} · ${image.name}`;
       const actions = item.querySelector('div');
       const replace = document.createElement('button');
-      replace.textContent = '수정';
-      replace.onclick = () => replacePhoto(category, year, image);
+      replace.textContent = '사진·파일명 수정';
+      replace.onclick = () => replacePhoto(category, image.year, image);
       const rename = document.createElement('button');
       rename.textContent = '이름 변경';
-      rename.onclick = () => renamePhoto(category, year, image);
+      rename.onclick = () => renamePhoto(category, image.year, image);
       const remove = document.createElement('button');
       remove.textContent = '삭제';
       remove.className = 'danger';
-      remove.onclick = () => deletePhoto(category, year, image);
+      remove.onclick = () => deletePhoto(category, image.year, image);
       actions.append(replace, rename, remove);
       list.append(item);
-    });
-    status(`${year}년 ${category}: ${images.length}장`);
+      });
+      status(`${selectedYear === 'auto' ? '전체 연도' : `${selectedYear}년`} ${category}: ${images.length}장 · 아래에서 수정하거나 삭제할 수 있습니다.`);
+    } catch (error) {
+      list.replaceChildren();
+      status(error.message, true);
+    }
   }
 
   async function updateManifest(mutator, extraChanges, message, onPhotoStored) {
@@ -346,16 +365,28 @@
   }
 
   async function replacePhoto(category, year, image) {
-    const file = await pickImage(`.${image.name.split('.').pop()}`);
+    const file = await pickImage(ALLOWED.map((extension) => `.${extension}`).join(','));
     if (!file) return;
-    if (file.name.split('.').pop().toLowerCase() !== image.name.split('.').pop().toLowerCase()) {
-      return status('기존 사진과 같은 확장자의 파일을 선택해 주세요.', true);
-    }
+    const requested = prompt('저장할 파일 이름을 입력하세요. 확장자도 포함해 주세요.', image.name);
+    if (!requested) return;
     try {
+      const name = safeName(requested);
+      const oldPath = `${BASE}/${category}/${year}/${image.name}`;
+      const newPath = `${BASE}/${category}/${year}/${name}`;
+      if (newPath !== oldPath) {
+        const entries = await listDirectory(`${BASE}/${category}/${year}`);
+        if (entries.some((entry) => entry.name === name)) throw new Error(`“${name}” 파일이 이미 있습니다. 다른 이름을 입력해 주세요.`);
+      }
       const bytes = new Uint8Array(await file.arrayBuffer());
-      await commitChanges([{ path: `${BASE}/${category}/${year}/${image.name}`, base64: bytesToBase64(bytes) }], `Replace farm photo ${image.name}`);
-      status('사진을 수정했습니다.');
+      const changes = [{ path: newPath, base64: bytesToBase64(bytes) }];
+      if (newPath !== oldPath) changes.push({ path: oldPath, remove: true });
+      await updateManifest((photos) => {
+        const record = photos.find((photo) => photo.path === oldPath.replace(/^docs\//, ''));
+        if (record) { record.name = name; record.path = newPath.replace(/^docs\//, ''); }
+      }, changes, `Replace farm photo ${image.name}${name === image.name ? '' : ` and rename to ${name}`}`);
+      status('사진과 파일 이름을 수정했습니다.');
       await refreshAdminList();
+      window.dispatchEvent(new Event('farm-gallery-updated'));
     } catch (error) { status(error.message, true); }
   }
 
@@ -366,6 +397,8 @@
       const name = safeName(requested);
       const oldPath = `${BASE}/${category}/${year}/${image.name}`;
       const newPath = `${BASE}/${category}/${year}/${name}`;
+      const entries = await listDirectory(`${BASE}/${category}/${year}`);
+      if (entries.some((entry) => entry.name === name)) throw new Error(`“${name}” 파일이 이미 있습니다. 다른 이름을 입력해 주세요.`);
       await updateManifest((photos) => {
         const record = photos.find((photo) => photo.path === oldPath.replace(/^docs\//, ''));
         if (record) { record.name = name; record.path = newPath.replace(/^docs\//, ''); }

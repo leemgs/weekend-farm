@@ -293,6 +293,7 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 .repo-photo-list div { display: flex; gap: 5px; }
 .repo-photo-list button { border: 0; border-radius: 7px; padding: 6px 8px; background: #dce6d4; color: #355b44; font-size: 11px; cursor: pointer; }
 .repo-photo-list button.danger { background: #f2d9d0; color: #a33d2d; }
+.repo-photo-list .repo-list-loading { display: block; color: var(--muted); font-size: 12px; text-align: center; }
 
 @media (max-width: 700px) {
   .admin-open { display: none; }

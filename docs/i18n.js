@@ -22,7 +22,7 @@
       retreat: 'Retreat', gardenCategory: 'Garden', barbecue: 'Barbecue', tools: 'Farm Tools', categoryRecord: ' Records', permanentAlbum: 'A permanent album connected to GitHub Pages.', managePhotos: 'Add · edit · delete photos', loading: 'Loading photos from GitHub…', emptyGallery: '<b>No photos yet.</b><br><br>Use Photo Manager to add the first memory.', loadError: 'Could not load the photo list.',
       photoAdmin: 'Photo Manager', adminTitle: 'Manage Photo Repository', connectTitle: '1. Connect to GitHub', connected: 'Connected', connect: 'Connect', disconnect: 'Disconnect',
       tokenHelp: 'Enter a fine-grained token with <b>Contents: Read and write</b> access to this repository. It is kept only in this tab’s <code>sessionStorage</code> and is never committed.',
-      manageTitle: '2. Manage Photos', manageHelp: 'Choose a category and detect the year automatically or select it manually. Auto detection checks EXIF date, filename, then file modified date. Existing filenames always require confirmation before overwrite.',
+      manageTitle: '2. Manage Photos', manageHelp: 'Choose a category to list existing photos from every year with edit, rename, and delete actions. New-photo years are detected from EXIF date, filename, then modified date. Editing can replace both the image and its stored filename.',
       autoYear: 'Detect year automatically', choosePhotos: 'Choose photos', saveGithub: 'Save to GitHub',
       perPage: 'Photos per page', byYear: 'By year', previous: 'Previous', next: 'Next', pageOf: 'Page {current} of {total} · {count} photos'
     }
