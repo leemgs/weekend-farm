@@ -45,6 +45,8 @@ const crops = [
   { name: '마늘', plant: 10, harvest: 6 }
 ];
 
+const fruitCrops = new Set(['멜론', '수박', '아몬드', '참외']);
+
 const cropNamesEn = {
   '감자': 'Potato', '완두': 'Pea', '양배추': 'Cabbage', '배추': 'Napa cabbage', '브로콜리': 'Broccoli',
   '근대': 'Chard', '당귀': 'Korean angelica', '미나리': 'Water parsley', '부추': 'Garlic chives', '상추': 'Lettuce',
@@ -82,12 +84,13 @@ function renderCalendar() {
   const calendar = document.querySelector('.calendar');
   if (!calendar) return;
 
-  calendar.innerHTML = `<div class="cell month crop-heading"><span aria-hidden="true">🌱</span>${translate('cropHeader', '우정읍 텃밭 작물')}</div>` +
+  calendar.innerHTML = `<div class="cell month category-heading">${translate('categoryHeader', '카테고리')}</div>` +
+    `<div class="cell month crop-heading"><span aria-hidden="true">🌱</span>${translate('cropHeader', '우정읍 텃밭 작물')}</div>` +
     Array.from({ length: 12 }, (_, index) =>
       `<div class="cell month">${isEnglish() ? index + 1 : `${index + 1}월`}</div>`
     ).join('');
 
-  crops.forEach((crop) => {
+  [...crops].sort((a, b) => a.name.localeCompare(b.name, 'ko')).forEach((crop) => {
     const row = document.createElement('div');
     const start = crop.sow || crop.plant;
     row.className = 'crop-row';
@@ -105,7 +108,9 @@ function renderCalendar() {
     }
 
     const displayName = isEnglish() ? cropNamesEn[crop.name] : crop.name;
-    row.innerHTML = `<div class="cell crop-name"><span class="crop-icon" aria-hidden="true">${cropIcons[crop.name] || '🌱'}</span><span>${displayName}</span></div>${cells.join('')}`;
+    const categoryName = fruitCrops.has(crop.name) ? translate('fruitCategory', '과일') : translate('vegetableCategory', '채소');
+    const categoryClass = fruitCrops.has(crop.name) ? 'fruit' : 'vegetable';
+    row.innerHTML = `<div class="cell crop-category ${categoryClass}">${categoryName}</div><div class="cell crop-name"><span class="crop-icon" aria-hidden="true">${cropIcons[crop.name] || '🌱'}</span><span>${displayName}</span></div>${cells.join('')}`;
     calendar.append(row);
   });
 
