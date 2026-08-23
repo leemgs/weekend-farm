@@ -313,6 +313,7 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 .crop-heading { gap: 6px; }
 .crop-name { gap: 8px; }
 .crop-icon { display: inline-grid; flex: 0 0 27px; width: 27px; height: 27px; place-items: center; border: 1px solid rgba(68,96,64,.12); border-radius: 9px; background: rgba(255,255,255,.72); font-size: 17px; line-height: 1; box-shadow: 0 2px 4px rgba(45,72,52,.08); }
+.crop-category.fruitTree { background: #f3e5c8; color: #806127; }.crop-category.flower { background: #f7e1eb; color: #9a4e71; }.crop-category.tree { background: #dfe9dc; color: #3c6745; }.crop-category.special { background: #e7e1f1; color: #695181; }
 .crop-filters { display: grid; gap: 10px; min-width: 310px; }
 .category-filter { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; font-weight: 800; }
 .category-filter select { flex: 1; border: 1px solid rgba(53,91,68,.18); border-radius: 12px; padding: 11px 34px 11px 12px; background: white; color: var(--ink); font: inherit; cursor: pointer; box-shadow: 0 8px 30px rgba(31,54,42,.06); }

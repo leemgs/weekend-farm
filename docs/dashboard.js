@@ -3,9 +3,9 @@
   const monthLabel = isEnglish() ? new Intl.DateTimeFormat('en', { month: 'long' }).format(new Date(2026, month - 1)) : `${month}월`;
   document.querySelector('#dashboardMonth').textContent = monthLabel;
 
-  const sortedNames = (items) => items.map((crop) => isEnglish() ? cropNamesEn[crop.name] : crop.name)
+  const sortedNames = (items) => items.map((crop) => isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name)
     .sort((a, b) => a.localeCompare(b, isEnglish() ? 'en' : 'ko'));
-  const active = crops.filter((crop) => isInSeason(month, crop.sow || crop.plant, crop.harvest));
+  const active = crops.filter((crop) => isInSeason(month, crop.sow || crop.plant, crop.harvest || crop.bloom || crop.end));
   const taskGroups = {
     sowTasks: crops.filter((crop) => crop.sow === month),
     plantTasks: crops.filter((crop) => crop.plant === month),

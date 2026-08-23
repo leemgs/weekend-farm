@@ -37,15 +37,66 @@ const crops = [
   { name: '아몬드', sow: 3, harvest: 10 },
   { name: '대파', sow: 3, plant: 6, harvest: 11 },
   { name: '양파', plant: 10, harvest: 6 },
-  { name: '무', sow: 8, harvest: 11 },
+  { name: '무우', sow: 8, harvest: 11 },
   { name: '갓', sow: 8, harvest: 11 },
   { name: '당근', sow: 7, harvest: 11 },
   { name: '시금치', sow: 9, harvest: 11 },
   { name: '쪽파', sow: 8, harvest: 11 },
-  { name: '마늘', plant: 10, harvest: 6 }
+  { name: '마늘', plant: 10, harvest: 6 },
+  { name: '고수', sow: 3, harvest: 10 },
+  { name: '금계국', sow: 4, bloom: 10 },
+  { name: '능소화', plant: 3, bloom: 8 },
+  { name: '살구나무', plant: 3, harvest: 7 },
+  { name: '호두나무', plant: 3, harvest: 10 },
+  { name: '자두나무', plant: 3, harvest: 7 },
+  { name: '대추나무', plant: 3, harvest: 10 },
+  { name: '감나무', plant: 3, harvest: 11 },
+  { name: '앵두나무', plant: 3, harvest: 6 },
+  { name: '밤나무', plant: 3, harvest: 10 },
+  { name: '삼색버드나무', plant: 3, end: 11 },
+  { name: '명이나물', sow: 9, harvest: 5 },
+  { name: '와사비', plant: 3, harvest: 11 },
+  { name: '음나무(엄나무)', plant: 3, harvest: 4 },
+  { name: '두릅나무', plant: 3, harvest: 4 },
+  { name: '헛개나무', plant: 3, harvest: 10 },
+  { name: '아피오스', plant: 4, harvest: 11 },
+  { name: '카싸바', plant: 5, harvest: 11 },
+  { name: '동과', sow: 4, plant: 5, harvest: 10 },
+  { name: '천연초', plant: 4, harvest: 11 },
+  { name: '히카마', plant: 5, harvest: 10 },
+  { name: '블루베리', plant: 3, harvest: 8 },
+  { name: '아스파라가스', sow: 3, plant: 4, harvest: 6 },
+  { name: '달래', sow: 8, harvest: 4 },
+  { name: '들깨', sow: 5, plant: 6, harvest: 10 },
+  { name: '참깨', sow: 5, harvest: 9 },
+  { name: '목화', sow: 4, harvest: 10 },
+  { name: '단호박', sow: 3, plant: 5, harvest: 9 },
+  { name: '냉이', sow: 9, harvest: 4 },
+  { name: '사과나무', plant: 3, harvest: 10 },
+  { name: '매실나무', plant: 3, harvest: 6 },
+  { name: '총각무우', sow: 8, harvest: 10 },
+  { name: '산초나무', plant: 3, harvest: 10 },
+  { name: '초피나무', plant: 3, harvest: 9 },
+  { name: '적치커리', sow: 3, harvest: 11 },
+  { name: '초석잠', plant: 4, harvest: 12 },
+  { name: '돼지감자', plant: 3, harvest: 11 },
+  { name: '측백나무', plant: 3, end: 11 },
+  { name: '털달개비', plant: 4, bloom: 9 },
+  { name: '콜라비', sow: 3, harvest: 11 },
+  { name: '주키니 호박', sow: 3, plant: 5, harvest: 10 }
 ];
 
-const fruitCrops = new Set(['멜론', '수박', '아몬드', '참외']);
+const fruitCrops = new Set(['멜론', '블루베리', '수박', '아몬드', '참외']);
+const fruitTreeCrops = new Set(['감나무', '대추나무', '매실나무', '밤나무', '사과나무', '살구나무', '앵두나무', '자두나무', '호두나무']);
+const flowerCrops = new Set(['금계국', '능소화', '털달개비']);
+const treeCrops = new Set(['두릅나무', '산초나무', '삼색버드나무', '음나무(엄나무)', '초피나무', '측백나무', '헛개나무']);
+const specialCrops = new Set(['목화', '아피오스', '천연초', '초석잠', '카싸바', '히카마']);
+const categoryOrder = ['vegetable', 'fruit', 'fruitTree', 'flower', 'tree', 'special'];
+const cropCategory = (name) => fruitCrops.has(name) ? 'fruit'
+  : fruitTreeCrops.has(name) ? 'fruitTree'
+    : flowerCrops.has(name) ? 'flower'
+      : treeCrops.has(name) ? 'tree'
+        : specialCrops.has(name) ? 'special' : 'vegetable';
 
 const cropNamesEn = {
   '감자': 'Potato', '완두': 'Pea', '양배추': 'Cabbage', '배추': 'Napa cabbage', '브로콜리': 'Broccoli',
@@ -54,7 +105,7 @@ const cropNamesEn = {
   '강낭콩': 'Kidney bean', '비트': 'Beet', '오이': 'Cucumber', '청경채': 'Bok choy', '토마토': 'Tomato',
   '가지': 'Eggplant', '고구마': 'Sweet potato', '고추': 'Pepper', '땅콩': 'Peanut', '옥수수': 'Corn',
   '멜론': 'Melon', '참외': 'Korean melon', '수박': 'Watermelon', '오크라': 'Okra', '토란': 'Taro',
-  '아몬드': 'Almond', '대파': 'Green onion', '양파': 'Onion', '무': 'Radish', '갓': 'Mustard greens',
+  '아몬드': 'Almond', '대파': 'Green onion', '양파': 'Onion', '무우': 'Radish', '갓': 'Mustard greens',
   '당근': 'Carrot', '시금치': 'Spinach', '쪽파': 'Scallion', '마늘': 'Garlic'
 };
 
@@ -65,7 +116,7 @@ const cropIcons = {
   '강낭콩': '🫘', '비트': '🫜', '오이': '🥒', '청경채': '🥬', '토마토': '🍅',
   '가지': '🍆', '고구마': '🍠', '고추': '🌶️', '땅콩': '🥜', '옥수수': '🌽',
   '멜론': '🍈', '참외': '🍈', '수박': '🍉', '오크라': '🌶️', '토란': '🍠',
-  '아몬드': '🌰', '대파': '🌱', '양파': '🧅', '무': '🫜', '갓': '🥬',
+  '아몬드': '🌰', '대파': '🌱', '양파': '🧅', '무우': '🫜', '갓': '🥬',
   '당근': '🥕', '시금치': '🥬', '쪽파': '🌱', '마늘': '🧄'
 };
 
@@ -91,29 +142,32 @@ function renderCalendar() {
     ).join('');
 
   [...crops].sort((a, b) => {
-    const categoryOrder = Number(fruitCrops.has(a.name)) - Number(fruitCrops.has(b.name));
-    return categoryOrder || a.name.localeCompare(b.name, 'ko');
+    const categoryDifference = categoryOrder.indexOf(cropCategory(a.name)) - categoryOrder.indexOf(cropCategory(b.name));
+    return categoryDifference || a.name.localeCompare(b.name, 'ko');
   }).forEach((crop) => {
     const row = document.createElement('div');
     const start = crop.sow || crop.plant;
     row.className = 'crop-row';
-    row.dataset.category = fruitCrops.has(crop.name) ? 'fruit' : 'vegetable';
+    row.dataset.category = cropCategory(crop.name);
     row.dataset.name = `${crop.name} ${cropNamesEn[crop.name] || ''}`.toLocaleLowerCase();
     row.style.display = 'contents';
 
     const cells = [];
     for (let month = 1; month <= 12; month += 1) {
-      const active = isInSeason(month, start, crop.harvest);
+      const end = crop.harvest || crop.bloom || crop.end;
+      const active = isInSeason(month, start, end);
       let label = '';
       if (month === crop.sow) label = translate('sow', '파종');
       if (month === crop.plant) label = translate('plant', '정식');
       if (month === crop.harvest) label = translate('harvest', '수확');
+      if (month === crop.bloom) label = translate('bloom', '개화');
       cells.push(`<div class="cell ${active ? `season ${month === crop.harvest ? 'harvest' : 'plant'}` : ''}">${label}</div>`);
     }
 
-    const displayName = isEnglish() ? cropNamesEn[crop.name] : crop.name;
-    const categoryName = fruitCrops.has(crop.name) ? translate('fruitCategory', '과일') : translate('vegetableCategory', '채소');
-    const categoryClass = fruitCrops.has(crop.name) ? 'fruit' : 'vegetable';
+    const displayName = isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name;
+    const categoryClass = cropCategory(crop.name);
+    const categoryLabels = { vegetable: ['vegetableCategory', '채소'], fruit: ['fruitCategory', '과일'], fruitTree: ['fruitTreeCategory', '과실수'], flower: ['flowerCategory', '꽃'], tree: ['treeCategory', '나무'], special: ['specialCategory', '특용작물'] };
+    const categoryName = translate(...categoryLabels[categoryClass]);
     row.innerHTML = `<div class="cell crop-category ${categoryClass}">${categoryName}</div><div class="cell crop-name"><span class="crop-icon" aria-hidden="true">${cropIcons[crop.name] || '🌱'}</span><span>${displayName}</span></div>${cells.join('')}`;
     calendar.append(row);
   });
