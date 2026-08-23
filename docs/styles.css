@@ -122,9 +122,6 @@ body {
 .weather-card > span { font-size: 27px; color: #d89d32; }
 .floating-card small { display: block; color: var(--muted); font-size: 10px; }
 .floating-card strong { display: block; font-family: Georgia, serif; }
-.crop-card { right: -10px; bottom: 45px; transform: rotate(2deg); }
-.crop-card strong { color: #4d7351; font-size: 31px; }
-.crop-card span { font-size: 11px; color: var(--muted); }
 
 .cloud {
   position: absolute;
@@ -185,7 +182,6 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
   .hero h1 { font-size: 49px; }
   .hero-visual { min-height: 430px; }
   .weather-card { top: 20px; }
-  .crop-card { right: 0; bottom: 10px; }
   .links { gap: 11px; }
 }
 

@@ -5,13 +5,12 @@
 
   const sortedNames = (items) => items.map((crop) => isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name)
     .sort((a, b) => a.localeCompare(b, isEnglish() ? 'en' : 'ko'));
-  const active = crops.filter((crop) => isInSeason(month, crop.sow || crop.plant, crop.harvest || crop.bloom || crop.end));
   const taskGroups = {
     sowTasks: crops.filter((crop) => crop.sow === month),
     plantTasks: crops.filter((crop) => crop.plant === month),
     harvestTasks: crops.filter((crop) => crop.harvest === month)
   };
-  document.querySelector('#activeCropCount').textContent = active.length;
+  document.querySelector('#annualCropCount').textContent = crops.length;
   document.querySelector('#harvestCropCount').textContent = taskGroups.harvestTasks.length;
 
   Object.entries(taskGroups).forEach(([id, items]) => {
