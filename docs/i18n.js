@@ -12,6 +12,8 @@
       heroStampOne: '🌿 A sea-breeze garden', heroStampTwo: '☀️ Sunlit weekends', heroStampThree: '🧺 Harvested together',
       seasonTitle: 'Another green day has begun', seasonCopy: 'We stroll through the dewy beds, fill a basket with ripe vegetables, and prepare an unhurried supper.', morningStep: 'Greet every leaf', noonStep: 'Meet the new sprouts', afternoonStep: 'A seasonal basket', eveningStep: 'Supper under sunset',
       ourFarm: 'OUR FARM', location: 'Ujeong-eup, Hwaseong',
+      statBandEyebrow: 'Our farm at a glance', statBandTitle: 'The Weekend Farm, by the numbers',
+      stat1Label: 'Grower skill levels', stat2Label: 'Months of garden calendar', stat3Label: 'Seasonal crop guides', stat4Label: 'Seasons of photo records',
       notesTitle: 'How we cultivate our weekends', notesCopy: 'Plan what to plant and preserve the people and scenery that made each season special.',
       calendarCard: 'Garden Calendar', calendarDesc: 'Plan sowing, transplanting, and harvesting with the seasons.', calendarLink: 'Open calendar →',
       albumCard: 'Our Photo Album', albumDesc: 'Collect the bright moments from our retreat and garden.', albumLink: 'Browse album →',

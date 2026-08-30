@@ -694,3 +694,423 @@ footer { background:linear-gradient(180deg,#2e6953,#234f42); }
   .breeze-leaves { display:none; }
 }
 @media(max-width:520px) { .hero-stamps{display:none}.day-steps li{min-height:125px}.season-postcard{padding:32px 0}.hero h1{font-size:43px} }
+
+/* =====================================================================
+   INFOGRAPHIC + RURAL THEME (인포그래픽 + 시골풍)
+   Flat, bold, data-forward styling on a warm countryside palette.
+   Layered last so it overrides the earlier watercolor / storybook look:
+   crisp edges, chunky offset shadows, solid colour blocks, clear numbers.
+   ===================================================================== */
+:root {
+  --green: #2f6b41;
+  --green-deep: #22492f;
+  --leaf: #6aa15a;
+  --clay: #d1663c;
+  --gold: #e2a326;
+  --wheat: #f0d99a;
+  --cream: #f6f0dd;
+  --paper: #fffdf6;
+  --ink: #24372a;
+  --muted: #69776a;
+  --sky: #7fb2c2;
+  --soil: #8a5a34;
+  --line: #24372a;
+  --shadow: 0 16px 30px -20px rgba(36, 55, 42, .55);
+  --hard: 5px 5px 0 rgba(36, 55, 42, .16);
+  --hard-sm: 3px 3px 0 rgba(36, 55, 42, .16);
+}
+
+/* --- Ground: flat cream paper with a faint furrow-dot grid --- */
+body {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(rgba(47, 107, 65, .08) 1.1px, transparent 1.2px),
+    linear-gradient(180deg, #f8f2e2 0%, #f4edd9 100%);
+  background-size: 22px 22px, 100% 100%;
+  background-attachment: scroll, fixed;
+  background-position: 0 0, 0 0;
+}
+body::before { content: none !important; }
+
+/* --- Header: solid paper strip with a firm baseline rule --- */
+.site-header {
+  background: rgba(255, 253, 246, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(36, 55, 42, .12);
+}
+.brand-mark {
+  background: var(--green);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: var(--hard-sm);
+  transform: rotate(-4deg);
+  font-style: normal;
+}
+.links a.active, .links a:hover { color: var(--green); }
+.nav-cta {
+  background: var(--clay) !important;
+  border: 2px solid var(--ink);
+  box-shadow: var(--hard-sm) !important;
+  border-radius: 12px;
+}
+
+/* --- Buttons: flat blocks with a hard offset shadow --- */
+.nav-cta, .btn {
+  border-radius: 12px;
+  box-shadow: var(--hard-sm) !important;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.btn-primary {
+  background: var(--clay);
+  border: 2px solid var(--ink);
+  color: #fff;
+}
+.btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 rgba(36, 55, 42, .18) !important; }
+.btn-secondary {
+  background: var(--paper);
+  border: 2px solid var(--green);
+  color: var(--green);
+}
+.btn-secondary:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 rgba(36, 55, 42, .16) !important; }
+.eyebrow {
+  display: inline-block;
+  padding: 5px 12px;
+  border: 2px solid var(--clay);
+  border-radius: 99px;
+  background: rgba(209, 102, 60, .1);
+  color: var(--clay);
+  letter-spacing: .12em;
+}
+
+/* --- Hero: clean banded sky over meadow, no wash blur --- */
+.storybook-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #bfe0e6 0%, #d9ecdf 46%, #eef1d6 74%, #e3e6bf 100%);
+}
+.storybook-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 1;
+  filter: none;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 84% 20%, #f5d873 0 42px, transparent 44px),
+    radial-gradient(rgba(47, 107, 65, .05) 1px, transparent 1.2px);
+  background-size: 100% 100%, 20px 20px;
+}
+.storybook-hero::after { content: none; }
+.storybook-hero .hero { position: relative; z-index: 1; }
+
+.hero h1 { text-shadow: 0 2px 0 rgba(255, 255, 255, .5); }
+.hero h1 em { color: var(--green); }
+.hero h1 em::after {
+  height: 10px; bottom: -8px;
+  filter: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'%3E%3Cpath d='M2 8Q52 2 96 7t102-3' fill='none' stroke='%23e2a326' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+}
+
+/* Painted illustration → crisp with a firm frame and hard shadow */
+.farm-scene {
+  filter: none;
+  border: 3px solid var(--ink);
+  border-radius: 24px;
+  background: #eaf2ea;
+  box-shadow: 9px 9px 0 rgba(36, 55, 42, .18);
+  overflow: hidden;
+}
+
+/* Floating card: solid data chit */
+.floating-card {
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--paper);
+  backdrop-filter: none;
+  box-shadow: var(--hard-sm);
+  transform: rotate(-2deg);
+}
+.floating-card strong { font-family: inherit; font-weight: 900; }
+
+.cloud { background: rgba(255, 255, 255, .8); filter: blur(2px); }
+
+/* Grass edge: crisp saw-tooth band, no displacement */
+.grass-edge {
+  height: 34px;
+  background: var(--green);
+  filter: none;
+}
+
+/* --- Stat band: the infographic centrepiece --- */
+.stat-band {
+  padding: 60px 0 66px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(36, 55, 42, .03) 38px 40px),
+    var(--green);
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+}
+.stat-band-head { text-align: center; margin-bottom: 34px; }
+.stat-band-head .eyebrow {
+  border-color: var(--wheat);
+  background: rgba(240, 217, 154, .18);
+  color: var(--wheat);
+}
+.stat-band-head h2 {
+  margin: 14px 0 0;
+  color: #fff;
+  font-family: "Noto Serif KR", Georgia, serif;
+  font-size: clamp(26px, 3.4vw, 40px);
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.stat {
+  position: relative;
+  padding: 26px 20px 22px;
+  text-align: center;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: var(--hard);
+}
+.stat-ico {
+  display: inline-grid;
+  place-items: center;
+  width: 54px; height: 54px;
+  margin-bottom: 12px;
+  font-size: 27px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--wheat);
+}
+.stat-green .stat-ico { background: #cfe6cf; }
+.stat-gold .stat-ico  { background: #f6e2a6; }
+.stat-clay .stat-ico  { background: #f2c9b4; }
+.stat-sky .stat-ico   { background: #c3e2ea; }
+.stat-num {
+  display: block;
+  font-family: Georgia, "Noto Serif KR", serif;
+  font-size: clamp(40px, 5vw, 58px);
+  line-height: 1;
+  font-weight: 900;
+  color: var(--green-deep);
+}
+.stat-num i { font-style: normal; color: var(--clay); }
+.stat-clay .stat-num { color: var(--clay); }
+.stat-gold .stat-num { color: #b9821a; }
+.stat-sky .stat-num  { color: #3d7f94; }
+.stat small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+
+/* --- Features: bold flat info cards, no wash pseudo --- */
+.features {
+  padding: 84px 0 96px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 46px, rgba(36, 55, 42, .04) 46px 48px),
+    var(--green-deep);
+}
+.features::before { content: none !important; }
+.section-head h2 { font-family: "Noto Serif KR", Georgia, serif; }
+.section-head p { color: #e2ecdf; }
+.feature-grid { gap: 22px; }
+.feature {
+  position: relative;
+  isolation: auto;
+  min-height: 280px;
+  padding: 30px;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--hard);
+  transform: none;
+}
+.feature::before { content: none !important; }
+.feature:nth-child(1) { border-top: 12px solid var(--leaf); }
+.feature:nth-child(2) { border-top: 12px solid var(--gold); transform: none; }
+.feature:nth-child(3) { border-top: 12px solid var(--clay); transform: none; }
+.feature:hover { transform: translate(-3px, -5px); box-shadow: 8px 10px 0 rgba(36, 55, 42, .16); }
+.feature-icon {
+  width: 54px; height: 54px;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--wheat);
+  color: var(--green-deep);
+  box-shadow: none;
+  font-size: 25px;
+}
+.feature:nth-child(2) .feature-icon { background: #f6e2a6; }
+.feature:nth-child(3) .feature-icon { background: #f2c9b4; }
+.feature small { color: var(--clay); font-weight: 900; }
+.feature h3 { color: var(--green-deep); font-family: "Noto Serif KR", Georgia, serif; }
+.feature p { color: #5c6a5c; }
+.feature b { color: var(--clay); }
+
+/* --- Level roadmap: a 5-step infographic ladder --- */
+.level-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin: 4px 0 26px;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.level-step {
+  position: relative;
+  padding: 22px 14px 18px;
+  text-align: center;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--hard-sm);
+}
+.level-step::after {
+  content: "→";
+  position: absolute;
+  top: 50%; right: -13px;
+  transform: translateY(-50%);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: 18px;
+  z-index: 2;
+}
+.level-step:last-child::after { content: none; }
+.step-num {
+  display: inline-grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  margin-bottom: 12px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  font-weight: 900;
+}
+.level-track .step-2 .step-num { background: #59894a; }
+.level-track .step-3 .step-num { background: var(--gold); color: var(--ink); }
+.level-track .step-4 .step-num { background: #cf7f3c; }
+.level-track .step-5 .step-num { background: var(--clay); }
+.step-ico { display: block; font-size: 24px; line-height: 1; margin-bottom: 8px; }
+.level-step b { display: block; color: var(--green-deep); font-size: 15px; }
+.level-step small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.level-step.step-5 { border-color: var(--clay); border-width: 3px; background: #fff6ee; }
+
+/* --- Skill levels: bold worksheet on flat parchment --- */
+.skill-levels {
+  padding: 84px 0 92px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 46px, rgba(36, 55, 42, .028) 46px 48px),
+    var(--cream);
+}
+.skill-levels-heading h2 { font-family: "Noto Serif KR", Georgia, serif; }
+.skill-table-wrap {
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: var(--hard);
+}
+.skill-table thead th {
+  background: var(--green);
+  border-bottom: 3px solid var(--ink);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.skill-table th, .skill-table td { border-bottom: 2px solid #e6e0cd; }
+.skill-table tbody th { background: #eaf1e4; color: var(--green-deep); }
+.skill-table tbody tr:hover td { background: #fbf5e8; }
+.level-number {
+  border: 2px solid var(--ink);
+  background: var(--green);
+  box-shadow: none;
+  font-weight: 900;
+}
+.skill-table .level-five th { background: #f7e3cf; color: var(--clay); }
+.skill-table .level-five .level-number { background: var(--clay); }
+.skill-table .level-five td { background: #fdf4ec; }
+.skill-levels-notes p {
+  background: var(--paper);
+  border: 2px solid rgba(36, 55, 42, .14);
+  border-left: 6px solid var(--gold);
+  border-radius: 12px;
+}
+.skill-levels-notes p:last-child { border-left-color: var(--clay); }
+.skill-levels-notes strong { color: var(--green-deep); }
+
+/* --- Footer: solid deep-field green --- */
+footer {
+  background: var(--green-deep);
+  border-top: 3px solid var(--ink);
+  color: #d6e0d1;
+}
+
+/* Cards elsewhere pick up the same crisp frame + hard shadow */
+.calendar-wrap, .photo-card, .upload-panel, .repo-banner,
+.dashboard-stats article, .task-board, .dashboard-links, .month-badge {
+  border: 2.5px solid var(--ink) !important;
+  box-shadow: var(--hard) !important;
+}
+
+@media (max-width: 900px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .level-track { grid-template-columns: repeat(2, 1fr); }
+  .level-step:nth-child(2)::after, .level-step:last-child::after { content: none; }
+}
+
+@media (max-width: 560px) {
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat { padding: 20px 12px 16px; }
+  .level-track { grid-template-columns: 1fr; }
+  .level-step::after {
+    content: "↓";
+    top: auto; right: 50%; bottom: -14px;
+    transform: translateX(50%);
+  }
+  .level-step:last-child::after { content: none; }
+}
+
+/* --- Restyle the remote "season postcard" to the infographic aesthetic:
+   flat cards, crisp frames, chunky offset shadows, bold arrows --- */
+.season-postcard { background: var(--cream); }
+.season-postcard-inner {
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--hard);
+}
+.season-intro h2 { font-family: "Noto Serif KR", Georgia, serif; color: var(--green-deep); }
+.day-steps li {
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  background: var(--paper);
+  box-shadow: var(--hard-sm);
+}
+.day-steps li:nth-child(1) { border-top: 8px solid var(--sky); }
+.day-steps li:nth-child(2) { background: var(--paper); border-top: 8px solid var(--leaf); }
+.day-steps li:nth-child(3) { background: var(--paper); border-top: 8px solid var(--gold); }
+.day-steps li:nth-child(4) { background: var(--paper); border-top: 8px solid var(--clay); }
+.day-steps li:not(:last-child)::after { content: "→"; color: var(--ink); }
+.day-steps strong { color: var(--green-deep); }
+
+/* Hero feature stamps as flat outlined chips */
+.hero-stamps span {
+  border: 2px solid var(--ink);
+  border-radius: 99px;
+  background: var(--paper);
+  backdrop-filter: none;
+  color: var(--green-deep);
+  box-shadow: var(--hard-sm);
+}
+.breeze-leaves i { color: var(--leaf); }
