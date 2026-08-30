@@ -6,8 +6,27 @@
     : `${now.getFullYear()}년 ${month}월`;
   document.querySelector('#dashboardMonth').textContent = monthLabel;
 
-  const sortedNames = (items) => items.map((crop) => isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name)
-    .sort((a, b) => a.localeCompare(b, isEnglish() ? 'en' : 'ko'));
+  const sortedCrops = (items) => [...items].sort((a, b) => {
+    const first = isEnglish() ? (cropNamesEn[a.name] || a.name) : a.name;
+    const second = isEnglish() ? (cropNamesEn[b.name] || b.name) : b.name;
+    return first.localeCompare(second, isEnglish() ? 'en' : 'ko');
+  });
+
+  // 권장 범위는 노지 재배에서 파종 시 평균 지온, 정식 시 평균 기온을 뜻한다.
+  // 품종과 생육 단계에 따른 차이를 고려해 단일 수치 대신 실용적인 범위로 안내한다.
+  const temperatureGroups = [
+    [['감자', '완두', '양배추', '브로콜리', '부추', '상추', '샐러리', '쑥갓', '케일', '파슬리', '비트', '청경채', '대파', '고수', '적치커리', '콜라비'], '15–20℃'],
+    [['배추', '무우', '갓', '당근', '시금치', '쪽파', '명이나물', '달래', '냉이', '총각무우'], '15–20℃'],
+    [['근대', '당귀', '미나리', '열무', '아스파라가스'], '18–22℃'],
+    [['강낭콩', '오이', '토마토', '가지', '고추', '땅콩', '옥수수', '멜론', '참외', '수박', '오크라', '동과', '단호박', '주키니 호박'], '20–25℃'],
+    [['고구마', '토란', '카싸바', '히카마'], '22–27℃'],
+    [['들깨', '참깨', '목화', '아몬드'], '20–25℃'],
+    [['금계국', '천연초'], '18–24℃'],
+    [['아피오스', '초석잠', '털달개비'], '18–23℃'],
+    [['양파', '마늘'], '15–20℃'],
+    [['능소화', '살구나무', '호두나무', '자두나무', '대추나무', '감나무', '앵두나무', '밤나무', '삼색버드나무', '와사비', '음나무(엄나무)', '두릅나무', '헛개나무', '블루베리', '사과나무', '매실나무', '산초나무', '초피나무', '돼지감자', '측백나무', '복숭아', '배나무', '보리수나무', '체리나무', '모과나무', '무화과', '석류나무', '동백나무', '흑감나무', '산수유'], '10–20℃']
+  ];
+  const optimalTemperatures = Object.fromEntries(temperatureGroups.flatMap(([names, range]) => names.map((name) => [name, range])));
   const taskGroups = {
     sowTasks: crops.filter((crop) => crop.sow === month),
     plantTasks: crops.filter((crop) => crop.plant === month),
@@ -35,14 +54,27 @@
 
   Object.entries(taskGroups).forEach(([id, items]) => {
     const list = document.querySelector(`#${id}`);
-    const names = sortedNames(items);
-    if (!names.length) {
+    const sortedItems = sortedCrops(items);
+    if (!sortedItems.length) {
       list.innerHTML = `<li class="no-task">${translate('noTasks', '이번 달 예정된 작물이 없어요.')}</li>`;
       return;
     }
-    list.replaceChildren(...names.map((name) => {
+    const taskType = id === 'sowTasks' ? 'sow' : id === 'plantTasks' ? 'plant' : 'harvest';
+    list.replaceChildren(...sortedItems.map((crop) => {
       const item = document.createElement('li');
-      item.textContent = name;
+      const name = document.createElement('span');
+      name.className = 'task-crop-name';
+      name.textContent = isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name;
+      item.append(name);
+      if (taskType !== 'harvest') {
+        const temperature = document.createElement('small');
+        const label = taskType === 'sow'
+          ? translate('sowTemperature', '지온')
+          : translate('plantTemperature', '기온');
+        temperature.className = 'task-temperature';
+        temperature.innerHTML = `<span aria-hidden="true">🌡</span>${label} ${optimalTemperatures[crop.name] || '—'} <em>${translate('optimalTemperature', '권장')}</em>`;
+        item.append(temperature);
+      }
       return item;
     }));
   });
