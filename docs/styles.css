@@ -643,6 +643,10 @@ body::before { opacity: .18; }
 .floating-card { background:rgba(255,253,238,.93); border:2px solid rgba(255,255,255,.72); box-shadow:0 9px 0 rgba(37,72,61,.12); }
 .cloud { background:rgba(255,255,255,.78); filter:blur(3px); }
 .grass-edge { background:#3f815c; filter:none; }
+.breeze-leaves { position:absolute; z-index:2; inset:0; overflow:hidden; pointer-events:none; }
+.breeze-leaves i { position:absolute; left:-5%; top:22%; color:#5f9b62; font-size:13px; font-style:normal; opacity:0; transform:rotate(35deg) scaleX(.65); animation:leaf-flight 11s linear infinite; }
+.breeze-leaves i:nth-child(2){top:36%;animation-delay:2.4s;color:#82ad58}.breeze-leaves i:nth-child(3){top:16%;animation-delay:5.3s}.breeze-leaves i:nth-child(4){top:48%;animation-delay:7.6s;color:#e1ad54}
+@keyframes leaf-flight { 8%{opacity:.75} 55%{transform:translate(55vw,55px) rotate(260deg) scaleX(.65)} 92%{opacity:.6} 100%{left:105%;top:31%;opacity:0;transform:rotate(540deg) scaleX(.65)} }
 .hero-stamps { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
 .hero-stamps span { padding:8px 12px; border:1px solid rgba(50,113,90,.14); border-radius:99px; background:rgba(255,253,240,.64); color:#3d6557; font-size:11px; font-weight:800; backdrop-filter:blur(5px); }
 
@@ -668,10 +672,25 @@ body::before { opacity: .18; }
 .tabs .active { background:#32715a; }.tab { background:#e8f1d9; }
 footer { background:linear-gradient(180deg,#2e6953,#234f42); }
 
+/* Inner pages share the same illustrated-world language instead of
+   reading like unrelated utility screens. */
+.page-main { position:relative; }
+.page-main::before { content:""; position:absolute; z-index:-1; top:12px; right:0; width:210px; height:110px; border-radius:50%; background:radial-gradient(ellipse at 50% 100%,rgba(112,169,95,.18) 0 42%,transparent 43%),radial-gradient(circle at 72% 22%,rgba(255,214,107,.5) 0 12%,transparent 13%); }
+.page-intro,.dashboard-hero { padding:30px 32px; border-radius:30px 18px 32px 20px; background:linear-gradient(125deg,rgba(255,253,243,.92),rgba(231,246,220,.78)); border:1px solid rgba(50,113,90,.09); box-shadow:0 12px 0 rgba(64,128,91,.06); }
+.search,.category-filter select,.gallery-controls,.farming-glossary { background:#fffdf6; border-color:rgba(50,113,90,.13); }
+.dashboard-stats article,.task-card,.quick-link-grid a,.photo-card { transition:transform .22s ease,box-shadow .22s ease; }
+.dashboard-stats article:hover,.task-card:hover,.quick-link-grid a:hover,.photo-card:hover { transform:translateY(-4px); box-shadow:0 18px 34px rgba(46,104,79,.13) !important; }
+.cell { background:#f1f6e9; }.crop-name { background:#e5f0dc; }.season { background:#d9edc6; }
+.calendar-wrap { border-radius:28px 16px 30px 18px; }
+.photo-card { border-radius:28px 14px 26px 16px; }
+:focus-visible { outline:3px solid #f2a25f; outline-offset:3px; }
+
 @media(max-width:800px) {
   .storybook-hero .hero { min-height:auto; }
   .season-postcard-inner { grid-template-columns:1fr; gap:25px; padding:28px 22px; }
   .day-steps { grid-template-columns:repeat(2,1fr); }
   .day-steps li:not(:last-child)::after { display:none; }
+  .page-intro,.dashboard-hero { padding:24px 20px; }
+  .breeze-leaves { display:none; }
 }
 @media(max-width:520px) { .hero-stamps{display:none}.day-steps li{min-height:125px}.season-postcard{padding:32px 0}.hero h1{font-size:43px} }
