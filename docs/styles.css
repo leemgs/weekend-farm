@@ -331,3 +331,252 @@ footer { background: #2b4b3a; color: #c9d4c5; border: 0; text-align: center; }
 @media(max-width:800px) { .skill-levels { padding: 60px 0; }.skill-levels-heading { grid-template-columns: 1fr; gap: 16px; }.skill-table { min-width: 0; }.skill-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }.skill-table,.skill-table tbody,.skill-table tr,.skill-table th,.skill-table td { display: block; width: 100%; }.skill-table tbody tr { padding: 16px; border-bottom: 8px solid #f4f0e5; }.skill-table tbody th { margin-bottom: 6px; border: 0; border-radius: 12px; }.skill-table td { display: grid; grid-template-columns: 105px 1fr; gap: 12px; padding: 10px 4px; }.skill-table td::before { content: attr(data-label); color: var(--green); font-size: 11px; font-weight: 900; }.skill-levels-notes { grid-template-columns: 1fr; }.skill-levels-notes p { grid-template-columns: 1fr; gap: 5px; } }
 @media(max-width:800px) { .farming-glossary { grid-template-columns: 1fr; }.farming-glossary dl,.dashboard-stats,.task-columns,.quick-link-grid { grid-template-columns: 1fr; }.dashboard-stats .crop-summary { grid-template-columns: 1fr; }.crop-total { padding: 0 0 16px; border-right: 0; border-bottom: 1px solid #e2e7de; }.category-counts { grid-template-columns: repeat(2,1fr); }.dashboard-hero { align-items: stretch; flex-direction: column; }.month-badge { width: 100%; }.dashboard-section-heading { align-items: flex-start; gap: 12px; flex-direction: column; } }
 @media(max-width:600px) { .nav { height: auto; min-height: 70px; gap: 8px; padding: 9px 0; }.brand > span:not(.brand-mark) { display: none; }.links { flex: 1; justify-content: flex-end; gap: 7px; }.links a { font-size: 11px; white-space: nowrap; }.language-toggle { margin-left: 2px; } }
+
+/* =====================================================================
+   WATERCOLOR THEME (수채화풍) — translucent washes on hand-made paper.
+   Layered on top of the storybook theme so the whole site reads as if
+   painted with watercolours: soft blooming colour, deckled edges, and
+   diffuse pigment shadows instead of hard offsets.
+   ===================================================================== */
+:root {
+  --green: #4a6b52;
+  --leaf: #7fa070;
+  --cream: #f7f1e3;
+  --ink: #33463b;
+  --muted: #6f7d70;
+  --orange: #c17a55;
+  --paper: #fdfaf2;
+  --wash-sage: rgba(129, 160, 118, .38);
+  --wash-sky: rgba(150, 187, 199, .34);
+  --wash-butter: rgba(232, 205, 133, .34);
+  --wash-blush: rgba(213, 150, 126, .30);
+  --wash-deep: rgba(74, 107, 82, .5);
+  --pigment-shadow: 0 22px 40px -22px rgba(74, 96, 70, .55);
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wc-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Hand-made paper ground: warm base + faint pigment blooms + fibre grain */
+body {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(60% 45% at 15% 8%, var(--wash-sage) 0%, transparent 60%),
+    radial-gradient(55% 40% at 92% 4%, var(--wash-butter) 0%, transparent 62%),
+    radial-gradient(50% 45% at 85% 90%, var(--wash-sky) 0%, transparent 60%),
+    radial-gradient(45% 40% at 5% 95%, var(--wash-blush) 0%, transparent 60%);
+  background-attachment: fixed;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--paper-grain);
+  background-size: 160px 160px;
+  opacity: .5;
+  mix-blend-mode: multiply;
+}
+
+/* --- Header: frosted paper strip --- */
+.site-header {
+  background: rgba(253, 250, 242, .78);
+  backdrop-filter: blur(16px) saturate(1.05);
+  border-bottom: 1px solid rgba(74, 107, 82, .12);
+}
+.brand-mark {
+  background: radial-gradient(circle at 35% 30%, #7fa070, #4a6b52 78%);
+  border: 2px solid rgba(255, 255, 255, .6);
+  box-shadow: 0 6px 14px -4px rgba(74, 107, 82, .6);
+  border-radius: 62% 38% 55% 45% / 55% 48% 52% 45%;
+}
+.links a.active, .links a:hover { color: var(--green); }
+.nav-cta {
+  background: linear-gradient(135deg, #5a7d5f, #4a6b52) !important;
+  box-shadow: 0 12px 22px -12px rgba(74, 107, 82, .8);
+}
+
+/* --- Buttons: soft pigment pills, gentle lift --- */
+.nav-cta, .btn { box-shadow: 0 12px 24px -14px rgba(74, 96, 70, .7); transition: transform .25s ease, box-shadow .25s ease; }
+.btn-primary { background: linear-gradient(135deg, #cf8a63, #b5623f); color: #fff; }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 30px -14px rgba(150, 80, 50, .6); }
+.btn-secondary {
+  border: 1px solid rgba(74, 107, 82, .2);
+  background: rgba(253, 250, 242, .7);
+  backdrop-filter: blur(6px);
+  color: var(--green);
+}
+.btn-secondary:hover { transform: translateY(-3px); }
+
+/* --- Hero: an open wash of sky, meadow and evening light --- */
+.storybook-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(80% 55% at 20% 12%, rgba(168, 201, 210, .55) 0%, transparent 62%),
+    radial-gradient(70% 50% at 88% 8%, rgba(240, 223, 168, .5) 0%, transparent 60%),
+    radial-gradient(85% 60% at 50% 108%, rgba(122, 155, 110, .6) 0%, transparent 66%),
+    linear-gradient(180deg, #eef4ec 0%, #f6efd9 60%, #e4e6c4 100%);
+}
+/* Soft pigment blooms drifting behind the copy */
+.storybook-hero::before {
+  content: "";
+  position: absolute;
+  inset: -6% -4%;
+  z-index: 0;
+  opacity: .8;
+  pointer-events: none;
+  filter: url(#wc-edge) blur(6px);
+  background:
+    radial-gradient(22% 30% at 18% 30%, rgba(127, 160, 112, .5) 0%, transparent 70%),
+    radial-gradient(26% 28% at 80% 24%, rgba(200, 150, 120, .42) 0%, transparent 70%),
+    radial-gradient(20% 26% at 65% 70%, rgba(150, 187, 199, .5) 0%, transparent 70%),
+    radial-gradient(18% 22% at 35% 78%, rgba(232, 205, 133, .48) 0%, transparent 72%);
+}
+/* Faint fibre wash over the hero */
+.storybook-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--paper-grain);
+  background-size: 170px 170px;
+  opacity: .28;
+  mix-blend-mode: multiply;
+}
+.storybook-hero .hero { position: relative; z-index: 1; }
+
+.hero h1 { text-shadow: 0 2px 10px rgba(255, 255, 255, .55); }
+.hero h1 em { color: #56794f; }
+.hero h1 em::after {
+  height: 11px; bottom: -10px;
+  filter: url(#wc-edge-soft);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'%3E%3Cpath d='M2 8Q52 2 96 7t102-3' fill='none' stroke='%23b5623f' stroke-width='5' stroke-linecap='round' opacity='0.55'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+}
+
+/* Painted illustration: let the edges bleed like wet pigment */
+.farm-scene { filter: url(#wc-scene) drop-shadow(0 26px 30px rgba(74, 96, 70, .28)); }
+
+/* Floating card: translucent paper chit */
+.floating-card {
+  border: 1px solid rgba(74, 107, 82, .14);
+  border-radius: 20px 16px 22px 14px;
+  background: rgba(253, 250, 242, .82);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 16px 30px -18px rgba(74, 96, 70, .55);
+}
+
+/* Clouds: soft washed puffs */
+.cloud { background: rgba(255, 255, 255, .62); filter: blur(6px); }
+
+/* Grass edge: wet brush stroke along the base */
+.grass-edge {
+  height: 42px;
+  background: linear-gradient(180deg, rgba(74, 107, 82, .85), #47664e);
+  filter: url(#wc-edge) blur(.4px);
+}
+
+/* --- Features: deep meadow wash with floating pigment cards --- */
+.features {
+  position: relative;
+  background:
+    radial-gradient(60% 70% at 15% 10%, rgba(120, 155, 110, .55) 0%, transparent 60%),
+    radial-gradient(60% 70% at 90% 90%, rgba(60, 92, 68, .6) 0%, transparent 62%),
+    linear-gradient(160deg, #557a5b 0%, #3f5f48 55%, #34503d 100%);
+}
+.features::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--paper-grain);
+  background-size: 180px 180px;
+  opacity: .16;
+  mix-blend-mode: overlay;
+}
+.features .shell { position: relative; z-index: 1; }
+.section-head p { color: #e4ecdf; }
+
+.feature {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: 28px 20px 30px 18px;
+  background: transparent;
+  box-shadow: none;
+  transform: rotate(-.6deg);
+}
+.feature:nth-child(2) { transform: rotate(.7deg); }
+.feature:nth-child(3) { transform: rotate(-.3deg); }
+/* Each card is a single translucent wash of pigment with a deckled edge */
+.feature::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  filter: url(#wc-edge);
+  background: linear-gradient(160deg, rgba(247, 240, 220, .96), rgba(238, 228, 200, .92));
+  box-shadow: 0 26px 44px -24px rgba(20, 40, 28, .7);
+}
+.feature:nth-child(2)::before { background: linear-gradient(160deg, rgba(217, 228, 202, .96), rgba(199, 214, 184, .92)); }
+.feature:nth-child(3)::before { background: linear-gradient(160deg, rgba(240, 214, 178, .96), rgba(230, 197, 158, .92)); }
+.feature:hover { transform: translateY(-8px) rotate(0); }
+.feature-icon {
+  background: rgba(74, 107, 82, .14);
+  color: #56794f;
+  box-shadow: inset 0 0 0 1px rgba(74, 107, 82, .12);
+}
+.feature small { color: #97795e; }
+.feature h3 { color: #3b5a44; }
+.feature p { color: #5f6b5d; }
+.feature b { color: #b0603c; }
+
+/* --- Skill levels section: parchment worksheet --- */
+.skill-levels {
+  background:
+    radial-gradient(55% 50% at 10% 0%, var(--wash-sage) 0%, transparent 55%),
+    radial-gradient(55% 50% at 95% 100%, var(--wash-blush) 0%, transparent 55%),
+    #f5efe0;
+}
+.skill-table-wrap {
+  border: 1px solid rgba(74, 107, 82, .1);
+  background: rgba(253, 250, 242, .9);
+  box-shadow: var(--pigment-shadow);
+}
+.skill-table thead th { background: linear-gradient(160deg, #557a5b, #45664d); }
+.skill-table tbody th { background: rgba(232, 240, 227, .8); }
+.skill-table tbody tr:hover td { background: rgba(255, 250, 240, .9); }
+.level-number { background: radial-gradient(circle at 35% 30%, #6f9366, #45664d 80%); box-shadow: 0 6px 12px -6px rgba(74, 107, 82, .8); }
+.skill-table .level-five th { background: #f2ddc7; }
+.skill-table .level-five .level-number { background: radial-gradient(circle at 35% 30%, #cf8a63, #b0603c 80%); }
+.skill-levels-notes p { background: rgba(255, 255, 255, .55); border-color: rgba(74, 107, 82, .12); }
+
+/* --- Footer: deep dusk wash --- */
+footer {
+  background:
+    radial-gradient(70% 120% at 20% 0%, rgba(80, 110, 86, .6) 0%, transparent 60%),
+    linear-gradient(180deg, #33503d, #274135);
+  color: #d3ddcd;
+}
+
+/* Cards & panels elsewhere on the site pick up soft pigment shadows */
+.calendar-wrap, .photo-card, .upload-panel, .repo-banner,
+.dashboard-stats article, .task-board, .dashboard-links, .month-badge {
+  box-shadow: var(--pigment-shadow) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud { animation: none; }
+}
+
+/* Filters are costly on very small screens & the displacement can smear
+   thin strokes — ease off but keep the washed colour palette. */
+@media (max-width: 800px) {
+  .storybook-hero::before { filter: blur(10px); }
+  .feature::before { filter: none; }
+  .grass-edge { filter: none; }
+}
