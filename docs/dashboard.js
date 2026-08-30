@@ -31,6 +31,14 @@
     '멜론', '참외', '수박', '단호박', '동과', '옥수수', '고구마', '감자', '땅콩',
     '아몬드', '밤나무', '호두나무', '감나무', '대추나무', '무화과', '석류나무'
   ]);
+  const harvestStorageTips = {
+    '강낭콩': ['씻지 말고 밀폐해 냉장', 'refrigerate unwashed in a sealed container'],
+    '멜론': ['통째로 후숙하고 익으면 냉장', 'ripen whole, then refrigerate'],
+    '복숭아': ['실온 후숙 후 밀폐해 냉장', 'ripen at room temperature, then refrigerate'],
+    '블루베리': ['씻지 말고 통풍 용기에 냉장', 'refrigerate unwashed in a ventilated container'],
+    '수박': ['자른 면을 밀폐해 바로 냉장', 'cover cut surfaces and refrigerate promptly'],
+    '참외': ['씻지 말고 봉투에 담아 냉장', 'refrigerate unwashed in a bag']
+  };
   const taskGroups = {
     sowTasks: crops.filter((crop) => crop.sow === month),
     plantTasks: crops.filter((crop) => crop.plant === month),
@@ -92,6 +100,13 @@
         condition.append(`${translate('harvestCondition', '수확')} · ${detail}`);
       }
       item.append(condition);
+      if (taskType === 'harvest') {
+        const storage = document.createElement('small');
+        storage.className = 'task-storage';
+        const storageTip = harvestStorageTips[crop.name];
+        storage.textContent = `❄ ${translate('storageMethod', '보관')} · ${storageTip ? storageTip[isEnglish() ? 1 : 0] : translate('storageFallback', '씻지 말고 빠르게 냉장')}`;
+        item.append(storage);
+      }
       return item;
     }));
   });
