@@ -27,6 +27,10 @@
     [['능소화', '살구나무', '호두나무', '자두나무', '대추나무', '감나무', '앵두나무', '밤나무', '삼색버드나무', '와사비', '음나무(엄나무)', '두릅나무', '헛개나무', '블루베리', '사과나무', '매실나무', '산초나무', '초피나무', '돼지감자', '측백나무', '복숭아', '배나무', '보리수나무', '체리나무', '모과나무', '무화과', '석류나무', '동백나무', '흑감나무', '산수유'], '10–20℃']
   ];
   const optimalTemperatures = Object.fromEntries(temperatureGroups.flatMap(([names, range]) => names.map((name) => [name, range])));
+  const maturitySensitiveHarvests = new Set([
+    '멜론', '참외', '수박', '단호박', '동과', '옥수수', '고구마', '감자', '땅콩',
+    '아몬드', '밤나무', '호두나무', '감나무', '대추나무', '무화과', '석류나무'
+  ]);
   const taskGroups = {
     sowTasks: crops.filter((crop) => crop.sow === month),
     plantTasks: crops.filter((crop) => crop.plant === month),
@@ -66,15 +70,28 @@
       name.className = 'task-crop-name';
       name.textContent = isEnglish() ? (cropNamesEn[crop.name] || crop.name) : crop.name;
       item.append(name);
+      const condition = document.createElement('small');
+      condition.className = 'task-condition';
+      const icon = document.createElement('span');
+      icon.setAttribute('aria-hidden', 'true');
+      condition.append(icon);
       if (taskType !== 'harvest') {
-        const temperature = document.createElement('small');
         const label = taskType === 'sow'
           ? translate('sowTemperature', '지온')
           : translate('plantTemperature', '기온');
-        temperature.className = 'task-temperature';
-        temperature.innerHTML = `<span aria-hidden="true">🌡</span>${label} ${optimalTemperatures[crop.name] || '—'} <em>${translate('optimalTemperature', '권장')}</em>`;
-        item.append(temperature);
+        icon.textContent = '🌡';
+        condition.append(`${label} ${optimalTemperatures[crop.name] || '—'} `);
+        const qualifier = document.createElement('em');
+        qualifier.textContent = translate('optimalTemperature', '권장');
+        condition.append(qualifier);
+      } else {
+        icon.textContent = maturitySensitiveHarvests.has(crop.name) ? '◉' : '☀';
+        const detail = maturitySensitiveHarvests.has(crop.name)
+          ? translate('harvestMaturity', '성숙도 확인')
+          : translate('harvestDryMorning', '서늘하고 마른 아침');
+        condition.append(`${translate('harvestCondition', '수확')} · ${detail}`);
       }
+      item.append(condition);
       return item;
     }));
   });
