@@ -4,7 +4,7 @@
   const STORAGE_KEY = 'weekend_farm_language';
   const messages = {
     en: {
-      home: 'Home', dashboard: 'Dashboard', calendar: 'Farm Calendar', gallery: 'Photo Album', record: 'Add a Memory',
+      home: 'Home', dashboard: 'Dashboard', calendar: 'Farm Calendar', gallery: 'Photo Album', agriStocks: 'Agri Stocks', record: 'Add a Memory',
       heroTitle: 'A little farm<br><em>where the breeze rests</em>',
       heroCopy: 'Follow the sea breeze to our green path in Ujeong-eup, Hwaseong. We plant seeds, gather around the fire, and preserve the stories each season brings.',
       plan: 'What shall we plant today? <span>→</span>', memories: 'Browse memories',
