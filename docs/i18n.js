@@ -9,6 +9,8 @@
       heroCopy: 'Follow the sea breeze to our green path in Ujeong-eup, Hwaseong. We plant seeds, gather around the fire, and preserve the stories each season brings.',
       plan: 'What shall we plant today? <span>→</span>', memories: 'Browse memories',
       heroNote: '<span>✦</span> Everything grows a little more slowly with the seasons of Ujeong-eup.',
+      heroStampOne: '🌿 A sea-breeze garden', heroStampTwo: '☀️ Sunlit weekends', heroStampThree: '🧺 Harvested together',
+      seasonTitle: 'Another green day has begun', seasonCopy: 'We stroll through the dewy beds, fill a basket with ripe vegetables, and prepare an unhurried supper.', morningStep: 'Greet every leaf', noonStep: 'Meet the new sprouts', afternoonStep: 'A seasonal basket', eveningStep: 'Supper under sunset',
       ourFarm: 'OUR FARM', location: 'Ujeong-eup, Hwaseong',
       notesTitle: 'How we cultivate our weekends', notesCopy: 'Plan what to plant and preserve the people and scenery that made each season special.',
       calendarCard: 'Garden Calendar', calendarDesc: 'Plan sowing, transplanting, and harvesting with the seasons.', calendarLink: 'Open calendar →',

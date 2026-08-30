@@ -580,3 +580,98 @@ footer {
   .feature::before { filter: none; }
   .grass-edge { filter: none; }
 }
+
+/* =====================================================================
+   SUNLIT ANIMATION COUNTRYSIDE — a brighter, cinematic farm story.
+   Clear sky blues, spring greens and warm butter yellows unite every
+   page while rounded, hand-drawn silhouettes keep the mood playful.
+   ===================================================================== */
+:root {
+  --green: #32715a;
+  --leaf: #71a85d;
+  --cream: #fff9e8;
+  --ink: #25483d;
+  --muted: #657970;
+  --orange: #ef8b55;
+  --paper: #fffdf5;
+  --sky: #a9dfe7;
+  --sun: #ffd66b;
+  --shadow: 0 18px 50px rgba(53, 103, 82, .13);
+  --pigment-shadow: 0 22px 48px -22px rgba(43, 102, 77, .38);
+}
+
+body {
+  background-color: #fff9e8;
+  background-image:
+    radial-gradient(circle at 8% 12%, rgba(255,214,107,.2), transparent 22%),
+    radial-gradient(circle at 90% 34%, rgba(120,196,183,.16), transparent 25%),
+    linear-gradient(180deg, #fffdf5, #fff8e4);
+}
+body::before { opacity: .18; }
+.site-header { background: rgba(255,253,245,.88); border-bottom-color: rgba(50,113,90,.1); }
+.nav { height: 82px; }
+.brand-mark { background: linear-gradient(145deg,#80b968,#32715a); border-color:#fff4b8; box-shadow:0 6px 0 rgba(37,72,61,.12); }
+.links a { color:#567168; }
+.links a.active { position:relative; }
+.links a.active::after { content:""; position:absolute; left:15%; right:15%; bottom:-9px; height:3px; border-radius:50%; background:#ef8b55; }
+.language-toggle { background:#fffdf5; border-color:rgba(50,113,90,.15); }
+.language-toggle button.active,.admin-open { background:#32715a; }
+
+.storybook-hero {
+  background:
+    radial-gradient(circle at 82% 17%, rgba(255,221,116,.9) 0 6%, transparent 6.3%),
+    linear-gradient(180deg,#a8dfe9 0%,#d8f0e7 53%,#fff1be 100%);
+}
+.storybook-hero::before {
+  inset:0; filter:none; opacity:1;
+  background:
+    radial-gradient(ellipse at 7% 100%,#79ad68 0 18%,transparent 18.3%),
+    radial-gradient(ellipse at 92% 105%,#5f9b62 0 27%,transparent 27.3%),
+    radial-gradient(ellipse at 48% 116%,#9fc66f 0 34%,transparent 34.3%);
+}
+.storybook-hero::after { opacity:.09; mix-blend-mode:multiply; }
+.storybook-hero .hero { min-height:720px; padding:62px 0 98px; }
+.hero h1 { color:#214d40; text-shadow:0 2px 0 rgba(255,255,255,.45); }
+.hero h1 em { color:#43875c; font-style:normal; }
+.hero h1 em::after { filter:none; background:#ffd66b; height:8px; border-radius:60% 35% 55% 40%; opacity:.85; }
+.hero-copy { color:#48675e; }
+.btn { transition:transform .2s ease,box-shadow .2s ease; }
+.btn-primary { background:linear-gradient(135deg,#f49b5f,#e46e46); box-shadow:0 7px 0 #c95838; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 9px 0 #c95838; }
+.btn-secondary { background:rgba(255,253,245,.9); box-shadow:0 7px 0 rgba(48,105,82,.13); }
+.farm-scene { filter:drop-shadow(0 24px 24px rgba(42,94,69,.2)) saturate(1.13) brightness(1.05); }
+.floating-card { background:rgba(255,253,238,.93); border:2px solid rgba(255,255,255,.72); box-shadow:0 9px 0 rgba(37,72,61,.12); }
+.cloud { background:rgba(255,255,255,.78); filter:blur(3px); }
+.grass-edge { background:#3f815c; filter:none; }
+.hero-stamps { display:flex; flex-wrap:wrap; gap:8px; margin-top:22px; }
+.hero-stamps span { padding:8px 12px; border:1px solid rgba(50,113,90,.14); border-radius:99px; background:rgba(255,253,240,.64); color:#3d6557; font-size:11px; font-weight:800; backdrop-filter:blur(5px); }
+
+.season-postcard { position:relative; z-index:2; padding:54px 0; background:#fff9e8; }
+.season-postcard-inner { display:grid; grid-template-columns:.78fr 1.22fr; gap:55px; align-items:center; padding:34px 40px; border:2px solid rgba(50,113,90,.1); border-radius:32px 18px 34px 20px; background:linear-gradient(135deg,#fffdf3,#f3f8d9); box-shadow:0 14px 0 rgba(64,128,91,.08); }
+.season-intro h2 { margin:8px 0 10px; font-family:Georgia,"Noto Serif KR",serif; font-size:clamp(28px,3.5vw,42px); line-height:1.2; color:#285846; }
+.season-intro p { margin:0; color:var(--muted); font-size:14px; line-height:1.75; }
+.day-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:0; padding:0; list-style:none; }
+.day-steps li { position:relative; min-height:145px; padding:17px 12px; border-radius:50% 50% 24px 24px; background:#fff; text-align:center; box-shadow:0 8px 20px rgba(49,106,81,.08); }
+.day-steps li:nth-child(2){background:#e6f4d8}.day-steps li:nth-child(3){background:#fff0bf}.day-steps li:nth-child(4){background:#ffe0c6}
+.day-steps li:not(:last-child)::after { content:"›"; position:absolute; z-index:2; top:43%; right:-10px; color:#75a168; font-size:21px; font-weight:900; }
+.step-icon { display:block; margin:3px 0 10px; font-size:30px; }.day-steps small,.day-steps strong { display:block; }.day-steps small { color:#8aa095; font-size:9px; letter-spacing:.13em; }.day-steps strong { margin-top:6px; color:#31594b; font-size:12px; }
+
+.features { background:linear-gradient(155deg,#3d8061,#27624f); }
+.feature::before { filter:none; background:linear-gradient(155deg,#fffbe9,#fff1c7); border:2px solid rgba(255,255,255,.25); }
+.feature:nth-child(2)::before { background:linear-gradient(155deg,#eaf5dc,#cfe9c6); }.feature:nth-child(3)::before { background:linear-gradient(155deg,#ffe7cd,#ffd1b6); }
+.feature { box-shadow:none; }.feature-icon { background:rgba(255,255,255,.7); }
+.skill-levels { background:linear-gradient(180deg,#fff9e8,#edf5d8); }
+.skill-table-wrap,.task-board,.dashboard-links,.dashboard-stats article,.photo-card,.calendar-wrap { background:#fffdf6; border:1px solid rgba(50,113,90,.08); }
+.month,.skill-table thead th { background:linear-gradient(145deg,#3f8263,#2f6a54); }
+.month-badge,.repo-banner { background:linear-gradient(145deg,#4b916b,#2f6a54); }
+.page-title { color:#285846; }
+.tabs .active { background:#32715a; }.tab { background:#e8f1d9; }
+footer { background:linear-gradient(180deg,#2e6953,#234f42); }
+
+@media(max-width:800px) {
+  .storybook-hero .hero { min-height:auto; }
+  .season-postcard-inner { grid-template-columns:1fr; gap:25px; padding:28px 22px; }
+  .day-steps { grid-template-columns:repeat(2,1fr); }
+  .day-steps li:not(:last-child)::after { display:none; }
+}
+@media(max-width:520px) { .hero-stamps{display:none}.day-steps li{min-height:125px}.season-postcard{padding:32px 0}.hero h1{font-size:43px} }
