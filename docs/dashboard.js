@@ -32,12 +32,30 @@
     '아몬드', '밤나무', '호두나무', '감나무', '대추나무', '무화과', '석류나무'
   ]);
   const harvestStorageTips = {
-    '강낭콩': ['씻지 말고 밀폐해 냉장', 'refrigerate unwashed in a sealed container'],
-    '멜론': ['통째로 후숙하고 익으면 냉장', 'ripen whole, then refrigerate'],
-    '복숭아': ['실온 후숙 후 밀폐해 냉장', 'ripen at room temperature, then refrigerate'],
-    '블루베리': ['씻지 말고 통풍 용기에 냉장', 'refrigerate unwashed in a ventilated container'],
-    '수박': ['자른 면을 밀폐해 바로 냉장', 'cover cut surfaces and refrigerate promptly'],
-    '참외': ['씻지 말고 봉투에 담아 냉장', 'refrigerate unwashed in a bag']
+    '강낭콩': [
+      '상처 난 콩을 골라내고 씻지 않은 채 키친타월로 감싸 밀폐 용기에 담아 냉장하세요. 오래 두려면 살짝 데쳐 물기를 완전히 빼고 냉동하세요.',
+      'Remove damaged pods, keep them unwashed, wrap in a paper towel, and refrigerate in a sealed container. For longer storage, blanch briefly, dry thoroughly, and freeze.'
+    ],
+    '멜론': [
+      '향이 나고 꼭지 부분이 부드러워질 때까지 통째로 실온 후숙하세요. 익은 멜론은 냉장하고, 잘라낸 후에는 자른 면을 밀폐해 빠른 시일 내에 드세요.',
+      'Ripen whole at room temperature until fragrant and slightly soft at the stem. Refrigerate when ripe; once cut, seal the cut surface and eat promptly.'
+    ],
+    '복숭아': [
+      '서로 눌리지 않게 한 층으로 놓고 실온에서 후숙하세요. 말랑해지고 향이 나면 씻지 않은 채 냉장하고, 먹기 직전에만 씻으세요.',
+      'Ripen in a single layer at room temperature without stacking. Once fragrant and soft, refrigerate unwashed and wash only just before eating.'
+    ],
+    '블루베리': [
+      '물러지거나 곰팡이 핀 알을 골라내고, 씻지 않은 채 키친타월을 깐 통풍 용기에 담아 냉장하세요. 냉동할 때는 씻은 뒤 완전히 말려 한 겹으로 얼리세요.',
+      'Discard soft or moldy berries and refrigerate the rest unwashed in a ventilated, paper-towel-lined container. To freeze, wash, dry completely, and freeze in one layer.'
+    ],
+    '수박': [
+      '통수박은 서늘한 곳에 두되, 잘라내면 바로 자른 면을 랩으로 감싸거나 밀폐 용기에 담아 냉장하세요. 실온에 오래 둔 조각은 보관하지 마세요.',
+      'Keep a whole watermelon in a cool place. Once cut, immediately wrap the surface or use an airtight container and refrigerate; do not store pieces left at room temperature for long.'
+    ],
+    '참외': [
+      '습기가 차지 않게 씻지 않은 채 하나씩 키친타월로 감싸 구멍 난 봉투에 담아 냉장하세요. 잘라낸 참외는 밀폐 용기에 담아 빠른 시일 내에 드세요.',
+      'Keep unwashed and dry; wrap each fruit in a paper towel and refrigerate in a perforated bag. Seal cut fruit in an airtight container and eat promptly.'
+    ]
   };
   const taskGroups = {
     sowTasks: crops.filter((crop) => crop.sow === month),
@@ -104,7 +122,7 @@
         const storage = document.createElement('small');
         storage.className = 'task-storage';
         const storageTip = harvestStorageTips[crop.name];
-        storage.textContent = `❄ ${translate('storageMethod', '보관')} · ${storageTip ? storageTip[isEnglish() ? 1 : 0] : translate('storageFallback', '씻지 말고 빠르게 냉장')}`;
+        storage.textContent = `❄ ${translate('storageMethod', '수확 후 보관법')} · ${storageTip ? storageTip[isEnglish() ? 1 : 0] : translate('storageFallback', '상처 난 부분을 골라내고 씻지 않은 채 빠르게 냉장하세요.')}`;
         item.append(storage);
       }
       return item;
