@@ -1,1 +1,4 @@
 .env
+
+# Source-office documents are analyzed locally; publish only web-friendly text.
+*.docx
