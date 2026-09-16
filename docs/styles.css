@@ -675,6 +675,9 @@ footer {
 .cert-level.lv-easy { background: #dcebd7; color: #2c7040; }
 .cert-level.lv-mid  { background: #f6ecc9; color: #8a6a1f; }
 .cert-level.lv-hard { background: #f3ddcc; color: #b0603c; }
+/* Estimated monthly-income cell in the comparison table */
+.cert-table td strong { display: block; color: #33503d; font-size: 14px; font-weight: 900; }
+.cert-table td small { display: block; margin-top: 3px; color: #7c8a7c; font-size: 11px; font-weight: 700; }
 
 /* Detail cards — translucent pigment paper */
 .cert-grid {
@@ -734,6 +737,18 @@ footer {
 .cert-facts dd {
   margin: 0; color: #56604f; font-size: 13.5px; line-height: 1.75;
 }
+/* Highlighted "예상 수입" row inside a detail card */
+.cert-facts > div.cert-income {
+  margin: 4px -12px;
+  padding: 14px 12px;
+  border-bottom: 0;
+  border-radius: 14px;
+  background:
+    radial-gradient(70% 140% at 0% 0%, rgba(232,205,133,.3) 0%, transparent 60%),
+    rgba(74,107,82,.07);
+}
+.cert-income dt { color: #8a6a1f; }
+.cert-income dd strong { color: #33503d; }
 
 /* Bottom notice */
 .cert-notice {
