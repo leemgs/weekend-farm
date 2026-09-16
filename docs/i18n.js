@@ -63,7 +63,7 @@
     const skillTableLabels = language === 'en'
       ? [t('skillStageColumn'), t('skillSpaceColumn'), t('skillAbilityColumn'), t('skillGoalColumn')]
       : ['생활 단계', '공간·운영', '쌓아야 할 역량', '다음 단계 준비'];
-    document.querySelectorAll('.skill-table tbody tr').forEach((row) => {
+    document.querySelectorAll('.skill-table:not(.cert-table) tbody tr').forEach((row) => {
       row.querySelectorAll('td').forEach((cell, index) => { cell.dataset.label = skillTableLabels[index]; });
     });
     document.querySelectorAll('.language-toggle button').forEach((button) => {
