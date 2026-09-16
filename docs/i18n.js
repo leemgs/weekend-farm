@@ -4,7 +4,13 @@
   const STORAGE_KEY = 'weekend_farm_language';
   const messages = {
     en: {
-      home: 'Home', dashboard: 'Dashboard', calendar: 'Farm Calendar', gallery: 'Photo Album', agriStocks: 'Agri Stocks', smartFarm: 'Smart Farm', farmShelter: 'Farm Shelter', record: 'Add a Memory',
+      home: 'Home', dashboard: 'Dashboard', calendar: 'Farm Calendar', gallery: 'Photo Album', agriStocks: 'Agri Stocks', smartFarm: 'Smart Farm', farmShelter: 'Farm Shelter', record: 'Add a Memory', certifications: 'Certifications',
+      certTitle: 'Practical Certifications That Pay Off in Rural Retirement', certIntro: 'A collection of certifications that can bring small jobs and side income while living in the countryside after leaving your job — from hands-on operator licenses to professional national qualifications, with their uses, pros, cons, cautions, real cases, and scope of use.',
+      certHighlightEyebrow: 'Featured qualification', certHighlightTitle: 'Tree Doctor (Namu-uisa) — a national qualification for tree care', certHighlightCopy: 'Including the 163 who passed the 12th Tree Doctor examination, a total of <strong>1,900 people have qualified</strong> since the system began in 2018. By law, tree care for apartment complexes, parks, and street trees may only be done by a licensed Tree Doctor (or a tree hospital that employs one), making it a notable second career for retirees.',
+      certCompareTitle: 'Compare at a Glance', certCompareCaption: 'Compare the type, difficulty, time to obtain, and rural income form of key practical certifications.',
+      certColName: 'Certification', certColType: 'Type', certColLevel: 'Difficulty', certColPeriod: 'Time to obtain (approx.)', certColIncome: 'Rural income form',
+      certDetailTitle: 'Certification Details', certNoticeTitle: 'Please note', certNoticeLabel: 'Always verify',
+      certNoticeCopy: 'Exam schedules, eligibility, fees, and legal standards vary by time and region. Before preparing, always check the latest notices from official bodies such as Q-Net, the Korea Forestry Promotion Institute, the Ministry of Land/regional aviation offices, and your local authority. The time and income estimates above are general references and can vary greatly by individual situation.',
       heroTitle: 'A little farm<br><em>where the breeze rests</em>',
       heroCopy: 'Follow the sea breeze to our green path in Ujeong-eup, Hwaseong. We plant seeds, gather around the fire, and preserve the stories each season brings.',
       plan: 'What shall we plant today? <span>→</span>', memories: 'Browse memories',
