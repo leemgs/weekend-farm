@@ -789,6 +789,110 @@ footer {
 .edu-list li::marker { color: var(--leaf); }
 .edu-list b { color: #33503d; font-weight: 800; }
 
+/* --- Climate page: cool/warm split hero --- */
+.climate-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-top: 8px;
+  padding: 32px 34px;
+  overflow: hidden;
+  border-radius: 34px 20px 34px 20px;
+  color: #fff;
+  background:
+    radial-gradient(120% 140% at 0% 50%, rgba(74,107,82,.95) 0%, rgba(93,140,150,.9) 34%, transparent 55%),
+    linear-gradient(105deg, #4a6b52 0%, #5d8c96 42%, #c9803f 66%, #b0472f 100%);
+  box-shadow: var(--pigment-shadow);
+}
+.climate-hero::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: var(--paper-grain);
+  background-size: 180px 180px;
+  opacity: .16; mix-blend-mode: overlay;
+}
+.climate-hero-figure {
+  position: relative; z-index: 1;
+  display: grid; place-items: center;
+  width: 128px; height: 128px;
+  border-radius: 50% 46% 54% 44%;
+  background: rgba(255,255,255,.16);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.35);
+  text-align: center;
+}
+.climate-hero-figure strong { font-family: Georgia, "Noto Serif KR", serif; font-size: 46px; line-height: 1; }
+.climate-hero-figure strong span { font-size: 20px; }
+.climate-hero-figure small { display: block; margin-top: 6px; font-size: 11px; opacity: .9; }
+.climate-hero-body { position: relative; z-index: 1; }
+.climate-hero-body .eyebrow { color: #ffe0b0; }
+.climate-hero-body h2 {
+  margin: 8px 0 10px;
+  font-family: "Nanum Myeongjo", "Noto Serif KR", Georgia, serif;
+  font-size: clamp(21px, 2.9vw, 31px); line-height: 1.3;
+}
+.climate-hero-body p { margin: 0; max-width: 720px; color: #f4ece2; line-height: 1.8; }
+.climate-hero-body strong { color: #fff; }
+
+/* "지금 무슨 일이" 배너: warm-tinted highlight */
+.cert-highlight.climate-now {
+  background:
+    radial-gradient(60% 90% at 12% 10%, rgba(201,128,63,.6) 0%, transparent 60%),
+    radial-gradient(70% 100% at 92% 92%, rgba(150,60,40,.6) 0%, transparent 62%),
+    linear-gradient(150deg, #a9663f 0%, #8a4a35 60%, #6d3a2c 100%);
+}
+.cert-highlight.climate-now .eyebrow { color: #ffe0b0; }
+
+/* Connection lead paragraph */
+.relate-lead { grid-column: 1 / -1; }
+.relate-lead p { margin: 0; color: #4f5a4b; font-size: 15px; line-height: 1.9; }
+.relate-lead strong { color: #33503d; }
+
+/* --- Homepage climate teaser --- */
+.climate-cta { padding: 8px 0 4px; }
+.climate-cta-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 30px;
+  border-radius: 30px 18px 30px 18px;
+  color: #fff;
+  background:
+    radial-gradient(120% 160% at 0% 50%, rgba(74,107,82,.96) 0%, rgba(93,140,150,.9) 32%, transparent 56%),
+    linear-gradient(105deg, #4a6b52 0%, #5d8c96 44%, #c9803f 70%, #b0472f 100%);
+  box-shadow: var(--pigment-shadow);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.climate-cta-inner:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -24px rgba(74,96,70,.6); }
+.climate-cta-badge {
+  display: grid; place-items: center;
+  width: 84px; height: 84px; flex: 0 0 84px;
+  border-radius: 50% 46% 54% 44%;
+  background: rgba(255,255,255,.16);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.35);
+}
+.climate-cta-badge strong { font-family: Georgia, serif; font-size: 30px; line-height: 1; }
+.climate-cta-badge strong span { font-size: 15px; }
+.climate-cta .eyebrow { color: #ffe0b0; }
+.climate-cta-body h2 {
+  margin: 6px 0 8px;
+  font-family: "Nanum Myeongjo", "Noto Serif KR", Georgia, serif;
+  font-size: clamp(19px, 2.3vw, 27px); line-height: 1.35; color: #fff;
+}
+.climate-cta-body p { margin: 0; max-width: 640px; color: #f1e9df; line-height: 1.7; font-size: 14px; }
+.climate-cta-arrow { flex: 0 0 auto; font-weight: 800; color: #ffe4c2; white-space: nowrap; }
+
+@media (max-width: 800px) {
+  .climate-hero { grid-template-columns: 1fr; }
+  .climate-hero-figure { width: 96px; height: 96px; }
+  .climate-hero-figure strong { font-size: 36px; }
+  .climate-cta-inner { grid-template-columns: 1fr; text-align: left; gap: 14px; }
+  .climate-cta-arrow { justify-self: start; }
+}
+
 /* Bottom notice */
 .cert-notice {
   margin-top: 40px;
